@@ -3,7 +3,7 @@ Hands on Workshop: Introduction to Bioinformatics
 
 We recommend that you browse the course content from the following webpage:
 
->> https://owensgl.github.io/biol525D/
+>> https://khodgins.github.io/Bioinformatics_Introduction/
 
 
 This repository contains all the files used to generate the website.
@@ -12,13 +12,13 @@ This repository contains all the files used to generate the website.
 
 To access the course content offline, you may download an up-to-date
 snapshot archive of the site content from this location:
-https://github.com/owensgl/biol525D/archive/master.zip
+https://github.com/khodgins/Bioinformatics_Introduction/archive/master.zip
 
 But the recommended approach is to use `git` which tracks changes and supports incremental updates:
 
-    git clone https://github.com/owensgl/biol525D.git
+    git clone https://github.com/khodgins/Bioinformatics_Introduction.git
 
-If the course content changes, you can update your local copy by going into to the **biol525D** directory that was created by the previous command and invoking the command:
+If the course content changes, you can update your local copy by going into to the **Bioinformatics_Introduction** directory that was created by the previous command and invoking the command:
 
     git pull
 
@@ -43,6 +43,8 @@ Copyright (C) 2015 S. Evan Staton, Sariel Hubner, Sam Yeaman
 Modified work (c) 2016, 2017, 2018 Gregory Owens, Kathryn Hodgins
 
 Modified work (c) 2019 Gregory Owens, Kathryn Hodgins, JS Legare
+
+Modified work (c) 2019 Gregory Owens, Kathryn Hodgins, S Tyagi, M McGee
 
 This program is distributed under the MIT (X11) License, which should
 be distributed with the package. If not, it can be found here:
