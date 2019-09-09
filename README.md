@@ -1,4 +1,4 @@
-Biol525D
+Hands on Workshop: Introduction to Bioinformatics
 =======
 
 We recommend that you browse the course content from the following webpage:
