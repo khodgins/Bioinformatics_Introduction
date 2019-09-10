@@ -37,16 +37,29 @@ The course material is organized in several topics, with slides and coding examp
 To get up to speed on working with a Unix system, take a look at the [unix help](resources/unix_ref.pdf) file. There are some resources there that will help you find the specific command you need for each task.
 
 ## Syllabus
-1. [Topic 1](./Topic_1/) Broad introduction: Scope of course, goals, overview of technology and bioinformatics, and the future of sequencing [Greg, JS]
-2. [Topic 2](./Topic_2/) Programming for biologists [JS]
-3. [Topic 3](./Topic_3/) Fastq files and quality checking/trimming [Kay]
-4. [Topic 4](./Topic_4/) Alignment: algorithms and tools [GREG]
-5. [Topic 5](./Topic_5/) Assembly: transcriptome and genome assembly [KAY]
-6. [Topic 6](./Topic_6/) RNAseq + differential expression analysis [KAY]
-7. [Topic 7](./Topic_7/) SNP and variant calling [GREG]
-8. [Topic 8](./Topic_8-9/) Population genomics and plotting in R (Part 1) [GREG]
-9. [Topic 9](./Topic_8-9/) Population genomics and plotting in R (Part 2) [GREG]
-10. [Topic 10](./Topic_10/) Phylogenetic inference [GREG]
+1. [Topic 1](./Topic_1/) Workshop overview & sequencing technology and approaches (Day 1 AM)
+    Lecture: Workshop overview and goals (Kay)
+             Sequencing technology and approaches ()
+    Tutorial: Logging onto the server  (Damien, Jerico)
+2. [Topic 2](./Topic_2/)  Command line introduction (Day 1 PM)
+    Tutorial: Command line introduction (Damien) 
+3. [Topic 3](./Topic_3/) Sequence file formats and quality control/trimming (Day 2 AM)
+    Lecture: Sequence file formats and quality control/trimming (Kay) 
+    Tutorial: QC GBS and RNAseq reads (Kay)
+4. [Topic 4](./Topic_4/) Sequence alignment (Day 2 PM) 
+    Lecture: Alignment algorithms and tools (Greg)
+    Tutorial:  Alignment of GBS reads (Greg)
+5. [Topic 5](./Topic_5/) Variant calling (Day 3 AM)
+    Lecture: SNP and variant calling (Greg) 
+    Tutorial: Call variants for GBS (Greg) 
+6. [Topic 6](./Topic_6-7/) Population genomics (Day 3 PM) 
+    Lecture: Population genomics (Greg)
+    Tutorial: Population genomics (Greg)
+7. [Topic 7](./Topic_6-7/) Population genomics and plotting in R (Day 4 AM) 
+    Tutorial: Population genomics and plotting in R (Greg)
+8. [Topic 8](./Topic_8/) Phylogenetics (Day 4 PM) (Matt)
+9. [Topic 9](./Topic_9/) Genome assembly (Day 5 AM) (Sonika)
+10. [Topic 10](./Topic_10/) RNAseq + differential expression analysis (Day 5 PM) (Sonika)
 
 ## Obtaining all the files on this site
 
