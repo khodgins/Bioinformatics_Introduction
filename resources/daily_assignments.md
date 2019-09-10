@@ -1,6 +1,6 @@
 ---
-title: Daily Assignments
-menuItem: Assignments
+title: Daily Questions
+menuItem: Questions
 layout: page
 menuPosition: 3
 ---
