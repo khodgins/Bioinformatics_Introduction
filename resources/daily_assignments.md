@@ -2,7 +2,7 @@
 title: Daily Questions
 menuItem: Questions
 layout: page
-menuPosition: 3
+menuPosition: 2
 ---
 
 ### Questions for discussion 
