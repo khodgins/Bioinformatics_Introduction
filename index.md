@@ -38,6 +38,7 @@ To get up to speed on working with a Unix system, take a look at the [unix help]
 
 ## Syllabus
 1. [Topic 1](./Topic_1/) Workshop overview & sequencing technology and approaches (Day 1 AM)
+    
     Lecture: Workshop overview and goals (Kay)
              Sequencing technology and approaches ()
     Tutorial: Logging onto the server  (Damien, Jerico)
@@ -48,15 +49,19 @@ To get up to speed on working with a Unix system, take a look at the [unix help]
     Lecture: Sequence file formats and quality control/trimming (Kay) 
     Tutorial: QC GBS and RNAseq reads (Kay)
 4. [Topic 4](./Topic_4/) Sequence alignment (Day 2 PM) 
+    
     Lecture: Alignment algorithms and tools (Greg)
     Tutorial:  Alignment of GBS reads (Greg)
 5. [Topic 5](./Topic_5/) Variant calling (Day 3 AM)
+    
     Lecture: SNP and variant calling (Greg) 
     Tutorial: Call variants for GBS (Greg) 
 6. [Topic 6](./Topic_6-7/) Population genomics (Day 3 PM) 
+    
     Lecture: Population genomics (Greg)
     Tutorial: Population genomics (Greg)
 7. [Topic 7](./Topic_6-7/) Population genomics and plotting in R (Day 4 AM) 
+    
     Tutorial: Population genomics and plotting in R (Greg)
 8. [Topic 8](./Topic_8/) Phylogenetics (Day 4 PM) (Matt)
 9. [Topic 9](./Topic_9/) Genome assembly (Day 5 AM) (Sonika)
