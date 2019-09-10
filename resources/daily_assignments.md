@@ -5,9 +5,7 @@ layout: page
 menuPosition: 3
 ---
 
-### Questions For discussion for each topic
-
-1. NO QUESTION
+### Questions for discussion 
 
 Topic 2. What is one task you’d rather use an R script instead of a shell script? Why? What is one task you’d rather use a shell script, instead of an R script? Why?
 
