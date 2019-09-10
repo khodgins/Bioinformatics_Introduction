@@ -44,6 +44,7 @@ To get up to speed on working with a Unix system, take a look at the [unix help]
 2. [Topic 2](./Topic_2/)  Command line introduction (Day 1 PM)
     Tutorial: Command line introduction (Damien) 
 3. [Topic 3](./Topic_3/) Sequence file formats and quality control/trimming (Day 2 AM)
+
     Lecture: Sequence file formats and quality control/trimming (Kay) 
     Tutorial: QC GBS and RNAseq reads (Kay)
 4. [Topic 4](./Topic_4/) Sequence alignment (Day 2 PM) 
