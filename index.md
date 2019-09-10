@@ -1,5 +1,5 @@
 ---
-title: "Biol525D Homepage"
+title: "Hands on Workshop: Introduction to Bioinformatics Homepage"
 layout: home
 menuItem: "General info"
 menuPosition: 1
@@ -10,29 +10,25 @@ menuPosition: 1
 <img src="{{ site.baseurl }}/style/header.jpg" width="100%" alt="Nitobe Memorial Gardens -- CC BY-NC 2.0 - @kardboard604 https://www.flickr.com/photos/moov4/10157685024/" title="Nitobe Memorial Gardens -- flickr @kardboard604">
 
 ## Description
-The purpose of this course is to provide graduate students with the theoretical knowledge and practical skills for the evolutionary analysis of next generation sequence data. The course will entail data retrieval and assembly, alignment techniques, variant calling, gene expression analyses, hypothesis testing, and population genomic and phylogenomic approaches. The course will be presented as a series of short lectures and lab exercises over a one week period in August.
+The purpose of this course is to provide graduate students with the theoretical knowledge and practical skills for the analysis of high throughput sequence data. The course will entail data retrieval and assembly, alignment techniques, variant calling, gene expression analyses, hypothesis testing, and population genomic and phylogenomic approaches. The course will be presented as a series of short lectures and lab exercises over a one week period during the mid semester break of the second semester.
 
 ## Instructors
-Dr. Gregory Owens, Dr. Kathryn Hodgins, Dr. Jean-Sebastien Legare
+Dr. Kathryn Hodgins, Dr. Gregory Owens, Dr. Matt McGee, Dr. Sonika Tyagi
 
 ## Format
-A mix of lecture and lab exercises, running in a 2-hour block.
+A mix of lecture and tutorial exercises running in a 2-hour block.
 
 ## Prequisites
-Students should have basic knowledge in R and some command line knowledge (although the latter could be obtained during the course)
+Prior exposure to R and Unix command line is recommended. However, we will be running a crash course on command line the first day. 
 
-## Evaluation
-Participation in discussions and lab exercises.
+## Lectures/tutorials
+30 Sept 2019 – 4 Oct 2019
+10am to Noon, 1pm to 3pm
 
-Consult [Grading Information](resources/grading.md).
 
-## Assignments
-Consult [Daily Assignments](resources/daily_assignments.md)
+## Where
+Room 144 (Digilabs), Building 17 School of Biological Sciences
 
-## Lectures/seminars
-July 29th to August 2nd, 2019.
-
-SCRF 1328, 10am to Noon, 1pm to 3pm.
 
 ## Basic course structure
 
