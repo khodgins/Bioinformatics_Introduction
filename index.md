@@ -63,19 +63,15 @@ To get up to speed on working with a Unix system, take a look at the [unix help]
 
 ## Obtaining all the files on this site
 
-You may use your internet connection to browse this site, or
-you may download the entirety of the files on the site in one
-constantly updated zip archive
-[here](https://github.com/owensgl/biol525D/archive/master.zip)
+To access the course content offline, you may download an up-to-date
+snapshot archive of the site content from this location:
+https://github.com/khodgins/Bioinformatics_Introduction/archive/master.zip
 
-This method dosesn't require `git`, however, you'll have to manually
-update the files this way (by downloading the whole repo again).
+But the recommended approach is to use `git` which tracks changes and supports incremental updates:
 
-To obtain to all the files via git, type:
+    git clone https://github.com/khodgins/Bioinformatics_Introduction.git
 
-    git clone https://github.com/owensgl/biol525D.git
-
-To update the all the files at any point in the future, change to the **biol525D** directory that was created by the previous command and type:
+If the course content changes, you can update your local copy by going into to the **Bioinformatics_Introduction** directory that was created by the previous command and invoking the command:
 
     git pull
 
@@ -90,11 +86,19 @@ Copyright (C) 2015 S. Evan Staton, Sariel Hubner, Sam Yeaman
 
 Modified work (c) 2016, 2017, 2018 Gregory Owens, Kathryn Hodgins
 
-Modified work (c) 2019 Gregory Owens, Kathryn Hodgins, J.S. Legare
+Modified work (c) 2019 Gregory Owens, Kathryn Hodgins, JS Legare
 
-This program is distributed under the MIT (X11) License, which should be distributed with the package.
-If not, it can be found here: http://www.opensource.org/licenses/mit-license.php
+Modified work (c) 2019 Gregory Owens, Kathryn Hodgins, S Tyagi, M McGee
+
+This program is distributed under the MIT (X11) License, which should
+be distributed with the package. If not, it can be found here:
+http://www.opensource.org/licenses/mit-license.php
+
+The license file is [here](./LICENSE)
+
 
 ## About this site:
 
-  This site is powered by GithubPages, and the code backing it is on GitHub [here](https://github.com/owensgl/biol525D/).
+  This site is powered by GithubPages, and the code backing it is on GitHub [here](https://github.com/khodgins/Bioinformatics_Introduction/).
+  
+  
