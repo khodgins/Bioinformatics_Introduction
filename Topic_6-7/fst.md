@@ -1,6 +1,6 @@
 ---
-title: "Topic 9 (final): Calculating and plotting Fst"
-topickey: 9.2
+title: "Topic 7 (final): Calculating and plotting Fst"
+topickey: 7.2
 topictitle: "Plotting Fst"
 ---
 
