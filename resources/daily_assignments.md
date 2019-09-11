@@ -10,7 +10,9 @@ menuPosition: 2
 
 Topic 2. What is one task you’d rather use an R script instead of a shell script? Why? What is one task you’d rather use a shell script, instead of an R script? Why?
 
-Topic 3. Try different filtering options for the GBS data  (see http://prinseq.sourceforge.net/manual.html for options) and plot QC graphs. Discuss which options you would choose to implement if this was your data and why.
+Topic 3 Q1. Compare the two .html files. What kinds of differences do you see in the files? Why do you think these differences are found (hint: think about the types of data you are analyzing)? 
+
+Topic 3 Q2. Try different filtering options for the GBS data  (see http://prinseq.sourceforge.net/manual.html for options) and plot QC graphs. Discuss which options you would choose to implement if this was your data and why.
 
 Topic 4. What are two ways that could be used to evaluate which aligner is best?
 
