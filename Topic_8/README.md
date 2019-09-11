@@ -1,7 +1,7 @@
 ---
-title: "Topic 8: RNAseq analysis exercise"
-permalink: /Topic_8/
-topickey: 8
+title: "Topic 10: RNAseq analysis exercise"
+permalink: /Topic_10/
+topickey: 10
 topictitle: "RNASeq Analysis"
 ---
 
