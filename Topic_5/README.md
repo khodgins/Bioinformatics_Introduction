@@ -1,250 +1,183 @@
 ---
-title: "Topic 9: Assembly"
-permalink: /Topic_9/
-topickey: 9
-topictitle: "Assembly"
+title: "Topic 5: SNP calling with GATK"
+permalink: /Topic_5/
+topickey: 5
+topictitle: "SNP Calling"
 ---
 
 ## Accompanying material
+* [Slides](./Topic 5.pdf)
 
-* Slides 2017: [UBC - De novo Assembly 2017](./Assembly2017.pdf)
-* Slides 2018: [UBC - De novo Assembly 2018](./Assembly2018.pdf)
-* Slides 2019: [UBC - De novo Assembly 2019](./Assembly2019.pdf)
-* Background reading: Comparison of the two major classes of assembly algorithms: overlap-layout-consensus and de-bruijn-graph [Paper](./background_reading/Briefings in Functional Genomics-2011-Li-bfgp-elr035.pdf). Briefings in Functional Genetics 2011.
-* Sense from sequence reads: methods for alignment and assembly [Paper](./background_reading/Flicek&Birney2009.pdf). Flicek and Birney. Nature methods supplement 2009.
-* [Velvet Manual 1.1](./background_reading/Manual.pdf). Daniel Zerbino, 2008.
-* Stacks: Building and Genotyping Loci De Novo From Short-Read Sequences [Paper](./background_reading/Stacks.pdf). Catchen, Amores, Hohenlohe, Cresko, Postlethwait. G3 Genes Genomes Genetics, 2011.
-* Trinity: reconstructing a full-length transcriptome without a genome from RNA-Seq data [Paper](./background_reading/nihms292662.pdf). Grabherr, Haas, Yassour, Levin, Thompson et al. Nat Biotechnol. 2013.
-* The impact of third generation genomic technologies on plant genome assembly [Paper](./Jiao.pdf). Jiao & Schneeberger. Curr. Op. Plant Biol. 2017.
+In this tutorial we're going to call SNPs with GATK. 
 
-
-# Topic 5 Assembly
-
-## Code break questions 
-
-1. Write a one liner to find all the overlaps exactly 4 bp in length between CTCTAGGCC and a list of other sequences in the file /home/biol525d/Topic_5/data/overlaps.fa
-
-2. Find all the unique 9mers in a fasta sequence /home/biol525d/Topic_5/data/kmer.fa
-
-This might be a tricky one and there are likely many ways to do this. First try out these commands that might help you complete this task. It might also be helpful to determine how many characters are in the sequence (wc -c).
-		
-Hints: test out the following commands:
-
+The first step is again to set up directories to put our incoming files.
 ```bash
-cut -c1- kmer.fa
+
+cd ~
+mkdir log
+mkdir gvcf
+mkdir db
+mkdir vcf
+```
+We also have a few programs we're going to use. Since we will be calling them repeatedly, its helpful to save their full path to a variable. This will only last for the current session so if you log out you'll have to set them up again.
+```bash
+gatk=/mnt/bin/gatk-4.1.2.0/gatk
+picard=/mnt/bin/picard.jar
 ```
 
+There are 10 different samples and we're going to have to run multiple steps on each. To make this easier, we make a list of all the sample names.
 ```bash
-cut -c1-4 kmer.fa
+ls bam | grep .sort.bam$ | sed s/.sort.bam//g > samplelist.txt
 ```
-		
-```bash
-for num in {1..10}
-    do
-        echo $num >> file.txt
-    done
-```
-What do these commands do? Can you use commands like this to find all the kmers in the sequence?
+Lets break this down. 
 
-3. Sort them and keep the unique kmers
+**ls bam** <= List all the files in the _bam_ directory
 
-Hint: try sort (look up the options)
+**\| grep .sort.bam$** <= Only keep the file names ending in _.sort.bam_.
+
+**\| sed s/.sort.bam//g** <= Replace the string _.sort.bam_ with "", effectively leaving only the sample name.
+
+**> samplelist.txt** <= Save the result in a file named _samplelist.txt_
 
 
-## Tutorial 
-
-Your goal for today is to assemble a bacterial genome, as best you can, using the program Velvet
-
-This genome was downloaded from GAGE (Genome Assembly Gold-Standard Evaluations) website (http://gage.cbcb.umd.edu/data/index.html): 
-
-Details for this dataset are as follows: 
-⋅⋅*Species: Staphylococcus aureus
-⋅⋅*Actual genome size: 2,860,307 bp
-⋅⋅*Type: Paired end
-⋅⋅*Read number (total - including both reads per pair): 1,294,104
-⋅⋅*Read size (each read): 101 bp 
-⋅⋅*Insert length (sd): 180 bp (+/-20 bp) 
-
-The data is located in /home/biol525d/Topic_5/data/. One file contains the forward read (frag_1.fastq.gz) and the other file contains the reverse read (frag_2.fastq.gz). Each read has a match from the same fragment in the other file and is in the same order in the matching file.
-
-Step 1. Install Velvet COMPLETED 
-(see Manual at http://www.ebi.ac.uk/~zerbino/velvet/Manual.pdf):
-
-Velvet is already installed, but this was the command used to install the program:
-
-sudo apt-get install velvet
-
-(note I also placed the zipped program in the /home/biol525d/Topic_5/scripts folder just in case, but it would have to be installed)
-
-Step 2. Enter this folder and unpack these data: COMPLETED 
-
-gunzip -d frag_*.fastq.gz
-
-
-### Question 1) Given the above information, what is the expected coverage?
-
-This information will be useful when you are running your genome assemblies.
-
-Step 3. The first program you need to run is velveth
-
-Velveth takes in a number of sequence files, produces a hashtable (i.e. all the kmers), then outputs two files in an output directory (creating it if necessary). These files are called Sequences and Roadmaps, and are necessary to velvetg. 
-
-The syntax to run velveth is as follows:
-
-velveth <output_directory> <hash_length>
-
-To ensure that each k-mer cannot be its own reverse complement, k (i.e. hash length or kmer length) must be odd.
-
-For all the options simply type velveth and refer to the velvet manual for more details.
-
-Here is an example command line:
-
-Make a directory in your home directory for your output
+The first step is to make duplicate reads using picardtools. If you were using GBS data you wouldn't want to do this step.
 
 ```bash
-mkdir ~/Topic_5
+
+while read name; do
+  java -jar $picard MarkDuplicates \
+  I=bam/$name.sort.bam O=bam/$name.sort.dedup.bam \
+  M=log/$name.duplicateinfo.txt
+  samtools index bam/$name.sort.dedup.bam
+done < samplelist.txt
+
 ```
 
-Move into the ~/Topic_5 directory and run velveth
+Now in the bam files duplicate reads are flagged. Take a look in the log directory, which sample has the highest number of duplicate reads?
+
+
+To use GATK, we have to index our reference genome. An index is a way to allow rapid access to a very large file. For example, it can tell the program that the third chromosome starts at bit 100000, so when the program wants to access that chromosome it can jump directly there rather than scan the whole file. Some index files are human readable (like .fai files) while others are not.
+```bash
+java -jar $picard CreateSequenceDictionary R= ref/HanXRQr1.0-20151230.1mb.fa O= ref/HanXRQr1.0-20151230.1mb.dict
+
+samtools faidx ref/HanXRQr1.0-20151230.1mb.fa
+```
+Take a look at the ref/HanXRQr1.0-20151230.1mb.fa.fai. How many chromosomes are there and how long is each? 
+
+
+
+The next step is to use GATK to create a GVCF file for each sample. This file summarizes support for reference or alternate alleles at all positions in the genome. It's an intermediate file we need to use before we create our final VCF file.
+
+This step can take a few minutes so lets first test it with a single sample to make sure it works.
+```
+for name in `cat ~/samplelist.txt | head -n 1`
+do
+$gatk --java-options "-Xmx15g" HaplotypeCaller \
+   -R ref/HanXRQr1.0-20151230.1mb.fa \
+   -I bam/$name.sort.dedup.bam \
+   --native-pair-hmm-threads 3 \
+   -ERC GVCF \
+   -O gvcf/$name.sort.dedup.g.vcf
+done
+```
+ Check your gvcf file to make sure it has a .idx index file. If the haplotypecaller crashes, it will produce a truncated gvcf file that will eventually crash the genotypegvcf step. Note that if you give genotypegvcf a truncated file without a idx file, it will produce an idx file itself, but it still won't work.
+
+We would run the HaplotypeCaller on the rest of the samples, but that will take too much time, so once you're satisfied that your script works, you can copy the rest of the gvcf files (+ idx files) from /mnt/data/gvcf into ~/gvcf.
+
+
+
+The next step is to import our gvcf files into a genomicsDB file. This is a compressed database representation of all the read data in our samples. It has two important features to remember:
+1. Each time you call GenomicsDBImport, you create a database for a single interval. This means that you can parallelize it easier, for example by calling it once per chromosome.
+2. The GenomicsDB file contains all the information of your GVCF files, but can't be added to, and can't be back transformed into a gvcf. That means if you get more samples, you can't just add them to your genomicdDB file, you have to go back to the gvcf files.
+
+
+We need to create a map file to GATK where our gvcf files are and what sample is in each. Because we use a regular naming scheme for our samples, we can create that using a bash script.
+This is what we're looking for:
+
+sample1 \t gvcf/sample1.g.vcf.gz
+
+sample2 \t gvcf/sample2.g.vcf.gz
+
+sample3 \t gvcf/sample3.g.vcf.gz
 
 ```bash
-velveth sa_assembly21 21 -shortPaired -fastq  -separate /home/biol525d/Topic_5/data/frag_1.fastq /home/biol525d/Topic_5/data/frag_2.fastq
+
+for i in `ls gvcf | grep ".g.vcf" | grep -v ".idx" | sed s/.sort.dedup.g.vcf//g`
+do
+  echo -e "$i\tgvcf/$i.sort.dedup.g.vcf"
+done > ~/biol525d.sample_map
+
 ```
 
-21 is the kmer length
--shortParied specifies the types of reads (paired end)
--fastq is the type of sequence format
--separate tells the programs that the paired reads are in two separate files (one with read 1 (frag_1) and one with read 2 (frag_2))
+Lets break down this loop to understand how its working 
 
-Run the above command.
+**for i in `...`** <= This is going to take the output of the commands in the `...` and loop through it line by line, putting the each line into the variable $i. 
 
-A Roadmap file is produced. This file is used as input for the next stage of velvet. For each k-mer observed in the set of reads, the hash table records the ID of the first read encountered containing that k-mer and the position of its occurrence within that read. This file rewrites each read as a set of original k-mers combined with overlaps with previously hashed reads. For more information see:
+**ls gvcf** <= List all files in the gvcf directory.
 
-http://homolog.us/blogs/blog/2011/12/06/format-of-velvet-roadmap-file/
+**\| grep ".g.vcf"** <= Only keep the files including .g.vcf in their name.
 
-This command needs a great deal of memory and may not work on your instance. Therefore, I have run this command using two different kmers (31 and 21). You can use the Roadmaps that I generated complete the rest of the tutorial.
+**\| grep -v ".idx"** <= Remove any file including .idx, which are the index files
 
-Step 4. The next step is to make make the graph, simplify the graph, correct errors and resolve repeats. This is done by velvetg.
+**\| sed s/.sort.dedup.g.vcf//g** <= Remove the suffix to the filename so that its only the sample name remaining.
 
-velvetg is run as follows:
+**do** <= Starts the part of the script where you put the commands to be repeated.
 
-velvetg <velveth output_directory>
+**echo -e "$i\t$gvcf/$i.sort.dedup.g.vcf"** <= Print out the variable $i (which is the sample name) and then a second column with the full file name.
 
-For all the options simply type velvetg and refer to the velvet manual for more details.
+**done > ~/biol525d.sample_map** <= Take all the output and put it into a file name _biol525d.sample_map_.
 
-Here is an example command line with no options:
+
+Next we call GenomicsDBImport to actually create the database.
+```bash
+$gatk --java-options "-Xmx10g -Xms10g" \
+       GenomicsDBImport \
+       --genomicsdb-workspace-path db/HanXRQChr01 \
+       --batch-size 50 \
+       -L HanXRQChr01 \
+       --sample-name-map ~/biol525d.sample_map \
+       --reader-threads 3
+```
+
+With the genomicsDB created, we're finally ready to actually call variants and output a vcf
+```bash
+$gatk --java-options "-Xmx10g" GenotypeGVCFs \
+   -R ref/HanXRQr1.0-20151230.1mb.fa \
+   -V gendb://db/HanXRQChr01 \
+   -O vcf/HanXRQChr01.vcf.gz
+```
+Now we can actually look at the VCF file
 
 ```bash
-velvetg sa_assembly21
+less -S vcf/HanXRQChr01.vcf.gz
 ```
 
-Run the above command.
+Try to find an indel. Do you see any sites with more than 1 alternate alleles? 
 
-Now contigs.fa appears in your output directory (sa_assembly21). This file contains your assembled genome. A log file, with information on your input parameters as well as some basic metrics of your assembly, and a stats.txt file with information on each node is present also appear. Note that node lengths are given in k-mers (see below). 
+Pick a site and figure out, whats the minor allele frequency? How many samples were genotyped? 
 
-Units in Velvet:
+We've now called variants for a single chromosome, but there are other chromosomes. In this case there are only three, but for many genomes there will be thousands of contigs. Your next challenge is to write a loop to create the genomicsdb file and then VCF for each chromosome. 
 
-Velvet measures and reports lengths in overlapping k-mers. Although not intuitive at first sight, this unit system allows for consistency throughout Velvet’s output. 
-
-The relationship between coverage and k-mer coverage is defined by the following equation:
-
-Ck = C ∗ (L−k+1)/L
-
-Where C=coverage, L=read length, and k=kmer length. 
-
-Similarly, statistics derived from lengths are also subjected to this transformation. It is as simple as adding k-1 to the reported length to recover the length in bp. If the median coverage of an assembly is reported as Ck read k-mers per contig k-mer it is corresponds in fact to roughly CkL/(L + k −1) read basepair per contig basepair (assuming that contigs are significantly longer than the hash length).
-
-### Question 2) For a k-mer of 21 what is the k-mer coverage for this genome assembly?
-
-
-Step 5. Assess assembly 
-
-There are several basic metrics to quantify the quality of a genome assembly. N50 is a common statistic similar to a mean or median contig length, but has greater weight given to the longer contigs. It is defined as the contig length at which half the bases in the genome are in contigs that size or larger. Other metrics include the longest contig size, the total size of the assembly and total contig number. 
-
-### Question 3) Can you think of other ways to assess assembly quality? What might be the trouble with only focusing on maximizing N50? Discuss this with your group.
-
-You can also quantify the assembly metrics using the perl script fasta_lengths_workshop.pl (in addition to the output provided from velvet). You will not need to make the adjustment for k-mer length as you would for the velvet assembly statistics.
-
-Run as follows in the sa_assembly21 directory:
+Once you have three VCF files, one for each chromosome, you can concatenate them together to make a single VCF file. We're going to use _bcftools_ which is a very fast program for manipulating vcfs as well as bcfs (the binary version of a vcf).
 
 ```bash
-perl  /home/biol525d/Topic_5/scripts/fasta_lengths_workshop.pl contigs.fa
+
+bcftools concat \
+  vcf/HanXRQChr01.vcf.gz \
+  vcf/HanXRQChr02.vcf.gz \
+  vcf/HanXRQChr03.vcf.gz \
+  -O z > vcf/full_genome.vcf.gz
+
 ```
 
-This script will produce two files. The first will be called contigs.fa.lengths, which is the length of each contig in the assembly. The second is contigs.fa.stats which provides: 
+You've done it! We have a VCF. Tomorrow we will fliter this file and use it for some analyses.
 
-1) The number of contigs in the assembly file contigs.fa
-2) The average length of the contigs
-3) The total number of bp in the assembly file
-4) The median contig length
-5) The minimum contig length
-6) The maximum contig length
-7) The N50
+### Coding challenge
+* Use command line tools to extract a list of all the samples in your VCF file, from the vcf file itself. They should be one name per line.
+* Take the original vcf file produced and create a vcf of only high biallelic SNPs for ANN samples. 
+* Use bcftools to filter your vcf file and select for sites with alternate allele frequencies > 0.01, including multi-allelic sites. 
 
-### Question 4) Quantify the assembly metrics for your first assembly that you ran without any options. In your group of four, each person should pick different sets of parameters to run. Compare the resulting assemblies with one another and discuss which ones seemed to have improved the assembly and why that might be. Be prepared to share your findings with the class. 
-
-Be careful not to use all your hard disk space or RAM. Velvet is relatively fast, but a memory hog. When you are finished the tutorial, you may want to remove files produced by Velvet from your drive to make space. 
-
-
-### Recap: 
-
-You can check how much space is on your drive by typing: 
-
-```bash
-df -h
-```
-
-This will provide you information on how large the directory you are in is:
-
-```bash
-du -sh 
-```
-
-This will tell you how much memory is being used currently by the server:
-
-```bash
-free -g 
-```
-
-To remove files you can type: 
-
-```bash
-rm <filename>
-```
-
-To remove all files in your current directory enter the directory and type the following (Be careful not to delete something you need! Every file in that directory will be GONE!)
-
-```bash
-rm *
-```
-
-To remove an empty directory type:
-
-```bash
-rmdir <directory name>
-```
-
-To move files or directories:
-
-```bash
-mv <old file name> <new file name>
-```
-
-### Back to the tutorial
-
-If you want to modify the k-mer you must run velveth again and replace 21 with a new number. Velvet only allows k-mers up to 31 bp in length. 
-
-Typically, the longer the k-mer, the better the assembly, until you hit the point of too little coverage. Discuss why this might be with your group.
-
-If you want to modify other parameters you can simply run velvetg without rerunning velveth. (Note that if you re-run fasta_lengths_workshop.pl and velvetg using the same filenames in the same directory the files will be written over, so either record your run options and assembly metrics, rename the output files or move them to a new directory to retain the information).
-
-Some potential parameters to modify include (see the manual for details):
--min_contig_lgth
--cov_cutoff
--ins_length 
--ins_length_sd 
--exp_cov (note that for this parameter you can include an estimated expected k-mer coverage or ask velvet to estimate it from the data by typing -exp_cov auto)
-
-Be sure to test -exp_cov. For a more detailed explanation of this parameter see:
-
-http://homolog.us/blogs/blog/2012/06/08/an-explanation-of-velvet-parameter-exp_cov/
+### Daily assignments
+1. Another program that is useful for filtering and formatting vcf files is [vcftools](https://vcftools.github.io/index.html). It is installed on the server. It can also do basic pop gen stats. Use it to calculate Fst between samples with ARG and ANN names.
+2. You're trying to create a very stringent set of SNPs. Based on the site information GATK produces, what filters would you use? Include the actual GATK abbreviations.
+3. What is strand bias and why would you filter based on it?
