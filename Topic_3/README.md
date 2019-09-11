@@ -172,7 +172,7 @@ head -100 ~/Topic_3/data/PmdT_147_100k_R1.fq | wc -c
 
 ```bash
 grep @HWI-ST ~/Topic_3/data/PmdT_147_100k_R1.fq
-
+```
 - On the contrary, with .fasta files, it is possible to just grep for the ">" character. Sometimes fasta files will have multiple lines of sequence for a given contig, each of which is separated by a newline character. In this case, you can't count the number of contigs just by counting the number of lines in the file. A simple count can be done by grep'ing lines that start with ">":
 
 ```bash
@@ -189,6 +189,7 @@ This uses sed to find everything between the two matches, the first of which is 
 
 - To get the last 10 lines of a file:
 
+```bash
 tail -10 ~/Topic_3/data/Pine_reference_rnaseq_reduced.fa
 ```
 
@@ -279,7 +280,7 @@ ff=`ls | grep fastq$`
 mv $ff ./sub
 ```
 
-This stores the contents of the ls | grep command in a variable calld "ff" which can be used by prefixing it with the "$" sign. This is very useful for moving files around or deleting them.
+This stores the contents of the ls \| grep command in a variable calld "ff" which can be used by prefixing it with the "$" sign. This is very useful for moving files around or deleting them.
 
 - to check through a bunch of files and see how many lines are in each, with output to the screen (press enter for each line):
 
