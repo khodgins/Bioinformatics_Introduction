@@ -1,6 +1,6 @@
 ---
-title: "Topic 9: Plotting Admixture results in R"
-topickey: 9
+title: "Topic 7: Plotting Admixture results in R"
+topickey: 7
 topictitle: "Plotting in R"
 datafiles: [1,2,3,4]
 ---
