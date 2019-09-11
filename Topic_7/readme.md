@@ -1,12 +1,12 @@
 ---
-title: "Topic 7: SNP calling with GATK"
-permalink: /Topic_7/
-topickey: 7
+title: "Topic 5: SNP calling with GATK"
+permalink: /Topic_5/
+topickey: 5
 topictitle: "SNP Calling"
 ---
 
 ## Accompanying material
-* [Slides](./Topic 7.pdf)
+* [Slides](./Topic 5.pdf)
 
 In this tutorial we're going to call SNPs with GATK. 
 
