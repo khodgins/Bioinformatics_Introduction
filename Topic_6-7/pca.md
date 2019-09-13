@@ -1,6 +1,6 @@
 ---
-title: "Topic 9 (continued): Principal Component Analysis in R"
-topickey: 9.1
+title: "Topic 7 (continued): Principal Component Analysis in R"
+topickey: 7.1
 topictitle: "PCA"
 ---
 
