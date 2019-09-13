@@ -1,226 +1,191 @@
 ---
-title: "Topic 10: Phylogenetics"
+title: "Topic 10: RNAseq analysis exercise"
 permalink: /Topic_10/
 topickey: 10
-topictitle: Phylogenetics
+topictitle: "RNASeq Analysis"
 ---
 
 ## Accompanying material
-* [Slides](./Topic 10.pdf)
 
-We're going to run our data through SNAPP since we only have variant sites. As the first step you need to download a couple things:
+* [Slides](./rnaseq_lecture_2019.pdf)
 
-[BEAST2](https://github.com/CompEvol/beast2/releases): Choose the option that fits your operating system. _with_JRE_ means that it includes java. If you've never installed java on your computer then you should download that version.
+## PART I: RSEM Processing
 
-[TRACER](https://github.com/beast-dev/tracer/releases/tag/v1.7.1): Again download the version that fits your operating system.
+Steps for running RSEM:
 
-[FigTree](https://github.com/rambaut/figtree/releases): Choose the .dmg for mac or .zip for other systems
+see documentation here for more info:
 
-[vcf2nex.pl](vcf2nex.pl): This is a perl converter from vcf to the nexus input format. It is edited from the version on the [SNAPP FAQ](https://www.beast2.org/snapp-faq/) to output integers instead of binary output. Put this in your biol525d project directory.
+<http://deweylab.biostat.wisc.edu/rsem/>
 
-Also note, this tutorial is based heavily off this [SNAPP tutorial](https://github.com/BEAST2-Dev/beast-docs/releases/download/v1.0/SNAPP-tutorial-2018.zip), so please refer to it for further details. 
+Typing in "rsem-calculate-expression" or any of the other commands without any arguments will bring up a help screen. In all the RSEM commands below.
 
-The first step is to convert our filtered vcf into the nexus format. Nexus is a phylogenetics data format. In this case we're converting our genotypes from 0/0, 0/1 and 1/1 into 0, 1 and 2.
+Step 1. Install Bowtie. COMPLETED
+
+sudo apt-get install bowtie2
+
+Step 2. Install RSEM (/home/biol525d/Topic_6/scripts/RSEM-1.2.31.tar.gz). COMPLETED
+
+First unpack.
+
+    tar -xzf RSEM-1.2.31.tar.gz
+
+Then compile the program.
+
+    cd RSEM-1.2.31
+    sudo make
+    sudo make install
+
+(If the installation fails make sure "make" is installed by running sudo apt install make. Also make sure g++ is installed. This should have been set up on your first day of class.)
+
+RSEM also needs Rscript to run:
+
+sudo apt-get install r-base-core
+
+Make a directory in your home drive for Topic_6
 
 ```bash
-#Navigate to your biol525d directory in the terminal. For me its on my Desktop
-cd ~/Desktop/biol525d/
-perl vcf2nex.pl < vcf/full_genome.filtered.vcf > vcf/full_genome.filtered.nex
+mkdir ~/Topic_6
 ```
 
-Next, in the BEAST 2.6.0 directory open the BEAUTi app.
-![](beauti_1.jpeg){:width="100%"}
-* Select *File => Manage Packages*.
-![](beauti_2.jpeg){:width="100%"}
-* Scroll down to SNAPP and click *Install/Upgrade*
-* Close package window
-* Select *File => Template => SNAPP*
-* Select *File => Add Alignment*
-* Navigate to your file full_genome.filtered.nex and select it
-* Select the Species/Population column and edit the names so they're either _ANN_ or _ARG_ instead of a ANN1133, etc.
-  ![](beauti_3.jpeg){:width="100%"}
-* Select the *MCMC* tab
-* Modify *Chain Lengths* to 25000
-* Modify *Store Every* to 100
-* Modify tracelog => File Name to "full_genome.filtered.log"
-* Modify tracelog => Log Every to 10
-* Modify screenlog => Log Every to 100
-* Modify treelog => File Name to "full_genome.filtered.trees"
-* Modify treelog => Log Every to 100
-* Select *File => Save* and name file "full_genome.filtered.snapp"
-  ![](beauti_4.jpeg){:width="100%"}
+Run the remaining commands from this directory. 
 
-This whole use of Beauti is setting up the SNAPP run. We're specifying which samples go to which population, since SNAPP is calculating the phylogenetic history of the population, rather than individuals. We're setting the number of MCMC chains to be very small for time limitations. Also we're not modifying the priors, which can be important and should be something you should consider for each particular dataset. 
+Step 3. Build the transcript-to-gene map using RSEM. This associates each gene isoform to a gene name.
 
-At the end, we have a file _full_genome.filtered.snapp.xml_ that is ready for running BEAST. Onward!
-* Open the BEAST app
-* Select full_genome.filtered.snapp.xml as the BEAST XML File
-* Select overwrite: overwrite log files
-* Select thread pool size => the maximum value
-* Click Run
-  ![](beast_1.jpeg){:width="50%"}
+command:
+extract-transcript-to-gene-map-from-trinity <fasta_reference> <output_map_name>
 
-In a terminal window beast should now be running. It's counting up to 25000, which will take a few minutes depending on your laptop speed.
-![](beast_2.jpeg){:width="100%"}
-
-Once its done, we should look at the traces. As BEAST runs, it is trying different possible tree shapes and parameters, trying to find the combination that has the highest posterior probability. We can look at those using *Tracer*
-
-* Open Tracer v1.7.1
-* Select *File => Import Trace File*
-* Navigate to your biol525d directory and find the full_genome.filtered.snapp.log file
-![](tracer_1.jpeg){:width="100%"}
-* Click on the *Trace* tab on the right
-![](tracer_2.jpeg){:width="100%"}
-
-Looking at that, we can clearly see that the MCMC chain has been climbing and may still be climbing. This means that we didn't run our MCMC long enough. If we did, it would look like a relatively flat squiggly line not trending up or down. Take a look at theta2, which seems to be relatively well estimated. A numerical representation of this is the ESS number you can see on the left. As a rule of thumb, ESS numbers should be >200.
-
-So those scores aren't great, but lets move onto actually visualizing the trees. BEAST has recorded many different possible trees and we can visualize them using *Densitree*
-
-* Open DensiTree (in the BEAST directory)
-* Select *File => Load* and navigate to _full_genome.filtered.trees_
-![](densitree_1.jpeg){:width="100%"}
-
-This isn't particularly informative since we only have two species, but you can see there is a lot of variation in node height. With more than 2 taxa you'd be able to see variation in tree topology.
-
-Lastly, to make a more classic phylogeny, we need to take our many different trees produced by BEAST and summarize them down into a single tree with confidence estimates.
-
-* Open TreeAnnotator (in the BEAST directory)
-* Change Burnin percentage to 20
-* Change Node heights to Median heights
-* Change Input Tree File to full_genome.filtered.trees
-* Change Output File to full_genome_filtered.ano.tre
-* Click Run
-![](treeannotator_1.jpeg){:width="100%"}
-
-It will run and output a new .tre file. We then open that file in FigTree
-![](figtree_1.jpeg){:width="100%"}
-
-* Click Node Bars and then select Display: height_95%\_HPD
-![](figtree_2.jpeg){:width="100%"}
-
-This is showing the confidence interval for that node height. If we had more taxa you could also show node confidence using the branch labels feature.
-
--------------
-
-We've gone through how to use SNAPP, but there are cases where you may want a phylogeny of samples, rather than populations. Additionally, SNAPP can be quite slow, especially as sample size increase. Another program that can estimate phylogenies is IQtree, which uses maximum likelihood and is considerably faster. It is very user-friendly and works well for estimating gene trees.
-
-The first step is to convert the VCF file into a fasta file. It is surprisingly hard to find a tool to do that, so I've supplied a script. Log back into your server
+example:
 ```bash
-cd ~
-mkdir phylogenetics
-zcat vcf/full_genome.filtered.vcf.gz |\
-     perl /mnt/bin/vcf2fasta_basic.pl \
-     > phylogenetics/full_genome.filtered.fa
+extract-transcript-to-gene-map-from-trinity /home/biol525d/Topic_6/data/Pine_reference_rnaseq_reduced.fa Pine_reference_rnaseq_reduced_map
 ```
-We only have variable sites, so we're going to use an ascertainment bias to correct for that. Typically phylogenetic programs assume you have all sites, including invariant ones.
 
-When using an ascertainment bias, every site needs to be variable. Annoyingly, phylogenetic programs treat heterozygous site as both homozygous types with some probability. Consequently, if an allele is only represented in its heterozygous state, there is some probability that the site is invariant, causing the program to crash. The script I provide filters out those sites.
+Step 2. Prepare the reference, so that RSEM can use it:
 
-We can then call iqtree.
+command:
+rsem-prepare-reference --transcript-to-gene-map <map_name_from_step1> <fasta_reference> <outputname>
+
+example:
 ```bash
-/mnt/bin/iqtree-1.6.11-Linux/bin/iqtree \
-     -s phylogenetics/full_genome.filtered.fa \
-     -m TEST+ASC \
-     -bb 1000 \
-     -st DNA
-```
-Lets break down this command
-* */mnt/bin/iqtree-1.6.11-Linux/bin/iqtree* <= Calling the iqtree program
-* *-s phylogenetics/full_genome.filtered.fa* <= The fasta file we just made.
-* *-m TEST+ASC* <= This makes iqtree test many different models of sequence evolution and pick the best one. All models include ascertainment bias correction.
-* *-bb 1000* <= This does 1000 ultrafast bootstrap approximations to estimate branch support
-* *-st DNA* <= This tells it that the data is DNA and not protein sequences or something else.
-
-Take a look at the output files. One of the most useful is *full_genome.filtered.fa.iqtree* which is a log of the run and a summary of all its results. It also includes an ascii phylogeny. We're going to focus on *full_genome.filtered.fa.treefile*, which is the maximum likelihood tree it selected.
-
-Transfer your whole *phylogenetics* directory to your *biol525d* Rstudio project directory on your laptop. Then open Rstudio, reload your project if its been closed, create a new Rscript and clear your environment. 
-
-
-```r
-#First some package installation.
-if (!requireNamespace("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
-
-BiocManager::install("ggtree")
-install.packages("phytools")
-#Note: Phytools installation may give this error message:
-#ERROR: configuration failed for package ‘magick’
-#It should still works for our purposes.
-
-#Then loading them
-library(ggtree)
-library(phytools)
-library(tidyverse)
-
-
+rsem-prepare-reference --transcript-to-gene-map Pine_reference_rnaseq_reduced_map /home/biol525d/Topic_6/data/Pine_reference_rnaseq_reduced.fa Pine_reference_rnaseq_reduced_ref
 ```
 
-We can now use ggtree to plot our tree. The advantage of using ggtree versus figtree is that we can script processing so we can do more complicated manipulations without lots of clicking (e.g. colour coding). An extensive guide to ggtree is [here](https://yulab-smu.github.io/treedata-book/index.html).
+Step 3. Prepare a bowtie2 index of the fasta file with the same output_name as the reference output in step #2. Bowtie is the alignment program that will align the reads to the reference:
 
+command:
+bowtie2-build -f <fasta_reference> <output_name>
 
-```r
-#Load the data
-tree <- read.newick("phylogenetics/full_genome.filtered.fa.treefile")
-#Plot the tree. We use xlim to make sure names are not cut off.
-ggtree(tree) +
-  geom_tiplab() +
-  xlim(0, 0.3)
+example:
+```bash
+bowtie2-build -f /home/biol525d/Topic_6/data/Pine_reference_rnaseq_reduced.fa Pine_reference_rnaseq_reduced_ref
 ```
-![](ggtree_1.jpeg){:width="100%"}
 
-This tree is unrooted, so it has chosen the alphabetically earliest sample as the root. To emphasize that its unrooted, you could also plot it like this:
-```r
-ggtree(tree, layout="equal_angle") +
-  geom_tiplab() +
-  xlim(-0.3, 0.2)
+Step 4. Calculate expression. Previous versions of RSEM specified the "--no-polyA" flag to be used if the data have already been cleaned to remove polyA tails, but this is now the default, so poly-A tails are not added unless you specify. 
+
+I have provided the example command for one of the individuals. Be sure to repeat the alignments and expression counts for all three individuals (PmdT_147, PmdT_191 and PmwT_171).
+
+
+command:
+rsem-calculate-expression --bowtie2 --paired-end <fastq_R1> <fastq_R2> <name_of_prepared_ref_step1> <output_name>
+
+example:
+```bash
+rsem-calculate-expression --bowtie2 --paired-end /home/biol525d/Topic_6/data/PmdT_147_100k_R1.fq /home/biol525d/Topic_6/data/PmdT_147_100k_R2.fq Pine_reference_rnaseq_reduced_ref PmdT_147_rsem
 ```
-![](ggtree_2.jpeg){:width="100%"}
 
-As we expect, there are two clear groups. If you don't have a clear outgroup sample (like in this case), one way of rooting the phylogeny is using a midpoint root. This takes the longest branch in the tree and declares it the root. In this phylogeny, the longest branch separates the two groups.
+Examine the output of RSEM, both the output to the screen and the files that it created. You should be able to see the percentage of reads that were aligned correctly, among other summary statistics. Refer to the online manual for a description of the files. The description of the  see /home/biol525d/Topic_6/scripts/RSEM-1.2.31/cnt_file_description.txt
 
-```r
-rooted.tree <- midpoint.root(tree)
-ggtree(rooted.tree) +
-  geom_tiplab() +
-  xlim(0, 0.2)
+#################
+
+Recap: 
+
+Use "ls" to discover what the output is called, and use "less" or "head" to see what the files look like.
+
+################
+
+Now rerun this command on the other two paired .fq libraries, generating three RSEM alignments. 
+
+Step 5. To plot some quality statistics, run the following command, replacing the <NAME> with the appropriate filename prefix, without the .stat ending (and removing the <> characters):
+
+command:
+rsem-plot-model <name_of_aligned_output_from_step4> outputname.pdf
+
+example:
+```bash
+rsem-plot-model PmdT_147_rsem PmdT_147_rsem.pdf
 ```
-![](ggtree_3.jpeg){:width="100%"}
 
-One of the really cool features of ggtree is the %<+% operator. This allows you to take dataframes with sample specific information and join that with the tree file. Once its joined you can easily highlight samples or add extra information. Unfortunately, details on this method can only be found on the wayback machine [here](https://web.archive.org/web/20181227140306/https://bioconductor.org/packages/release/bioc/vignettes/ggtree/inst/doc/treeAnnotation.html#the-operator).
+From the RSEM manual:
+The plots generated depends on read type and user configuration. It may include fragment length distribution, mate length distribution, read start position distribution (RSPD), quality score vs observed quality given a reference base, position vs percentage of sequencing error given a reference base and histogram of reads with different number of alignments.
 
-```r
-#First we make a dataframe with species information
+fragment length distribution and mate length distribution: x-axis is fragment/mate length, y axis is the probability of generating a fragment/mate with the associated length
 
-tree_info <- tibble(taxa=as.character(tree$tip.label))
-tree_info %>%
-  mutate(species=substr(taxa,0,3)) -> tree_info
-tree_info
-# A tibble: 10 x 2
-   taxa    species
-   <chr>   <chr>
- 1 ANN1133 ANN
- 2 ANN1134 ANN
- 3 ANN1337 ANN
- 4 ANN1373 ANN
- 5 ARG0010 ARG
- 6 ARG0015 ARG
- 7 ARG0016 ARG
- 8 ARG0018 ARG
- 9 ARG0028 ARG
-10 ANN1338 ANN
+RSPD: Read Start Position Distribution. x-axis is bin number, y-axis is the probability of each bin. RSPD can be used as an indicator of 3’ bias
 
-#Then we use %<+% to add that to the tree.
-ggtree(rooted.tree) %<+% tree_info +
-  geom_tiplab(aes(color=species)) +
-  xlim(0, 0.2)
+Quality score vs. observed quality given a reference base: x-axis is Phred quality scores associated with data, y-axis is the “observed quality”, Phred quality scores learned by RSEM from the data. Q = –10log_10(P), where Q is Phred quality score and P is the probability of sequencing error for a particular base
+
+Position vs. percentage sequencing error given a reference base: x-axis is position and y-axis is percentage sequencing error
+
+Histogram of reads with different number of alignments: x-axis is the number of alignments a read has and y-axis is the number of such reads. The inf in x-axis means number of reads filtered due to too many alignments
+
+You can download these to your computer to take a look at the graphs.
+
+Step 6. To make a table out of the individual library expression files that you have created, use the custom perl script called "add_RSEM_data_to_table.pl". To run this, you will first have to create a list of the contig names that were in your reference (/home/biol525d/Topic_6/data/Pine_reference_rnaseq_reduced.fa), along with a list of the .genes.results files created by RSEM that you want to put together. The list of names in the reference will have to match the names that you see in the RSEM output files that end in ".genes.results". See if you can figure out how to do these operations using simple bash commands. The commands to do so are listed at the bottom of this document if you run into trouble. Then run the perl script:
+
+
+command:
+perl add_RSEM_data_to_table.pl <list_to_add> <gene_names> <suffix_for_output>
+
+example:
+```bash
+perl /home/biol525d/Topic_6/scripts/add_RSEM_data_to_table.pl list_to_add.txt gene_names.txt _expression_table.txt
 ```
-![](ggtree_4.jpeg){:width="100%"}
+
+You can see that this outputs a table that is readable in R, with one row for each gene and one column for each individual, with the expected counts from the 5th column printed out. If you wish to modify what is printed to the file, it can be done by editing line 81.
+
+### Question 1. What is the expected count of comp996_c0 for each individual?
+
+### Question 2. What expression measure would you use to compare gene expression between different genes and why? Is it appropriate to compare the raw expression counts? Can you get more appropriate data from RSEM? Discuss this with a group of four and be prepared to share your ideas with the class.
+
+
+## RNAseq analysis exercise PART II: EdgeR analysis
+
+#### Required Files
+* [cold_hot_expression.txt](./cold_hot_expression.txt)
+* [cold_hot_mwh_expression.txt](./cold_hot_mwh_expression.txt)
+* [process_hot_cold_expression.R](./process_hot_cold_expression.R)
+
+
+There are two data files:
+cold_hot_expression.txt
+cold_hot_mwh_expression.txt
+
+They have been created by using RSEM to align libraries to a lodgepole pine reference and represent a subset of the data published in Yeaman et al. (2014; New Phytologist). Individuals were grown in a common garden and then exposed to conditions that were either hot (H), cool (C), or mild and wet with a heat treatment (MWH; see paper for details). The reference dataset has been trimmed so that it is smaller and easier to work with for this workshop.
+
+The script "process_hot_cold_expression.R" will show you some of the basic steps for analyzing expression data. For more details, the EdgeR user guide (included in the folder background reading) provides an excellent resource with well worked examples. Use these examples to play around with the data and try to answer the following questions:
+
+### Question 1. How many genes are differentially expressed by treatment in the simple contrast of C vs H (using dataset "cold_hot_expression.txt")? How does the choice of FDR cutoff or p-value affect this number? 
+ 
+### Question 2. How many genes are differentially expressed in the three-way contrast (using "cold_hot_mwh_expression.txt")? Which treatment is driving differential expression here? How do you know?
+
+### Question 3. How much does model fitting with common dispersion vs. tagwise dispersion affect the answers you get from the data? (think in terms of the number of DE genes, the evidence for a single gene, etc.)
+
+
+## STEPS for bash commands to prepare input files for add_RSEM_data_to_table.pl 
+
+List all files with .genes.results in their name (you may want to delete some if you've made more copies than you should have during testing, or chain multiple "\| grep" commands together)
+
+```bash
+ls *genes.results > list_to_add.txt
+```
+
+Find all lines that have ">" in them, which are the contig names. Then pass these to sed and strip off the ">" character, and save it to a file:
+
+```bash
+grep ">" Pine_reference_rnaseq_reduced.fa | sed 's/>//' > gene_names.txt
+```
 
 
 
-## Daily Questions:
-1. What are two biological scenarios where you would want to use a reticulate tree, versus the standard non-reticulate tree, to represent the phylogeny?
-2. What does it mean when something has 50% bootstrap support? What are two possible reasons that a node may have low support? Include one biological and one methodological reason.
 
 
-
+ 
