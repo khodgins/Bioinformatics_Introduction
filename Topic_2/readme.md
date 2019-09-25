@@ -14,7 +14,6 @@ understanding problems.
 
 ### Accompanying material
 
-* [Slides](./Topic 2.pdf)
 * [Software Carpentry Tutorial](http://swcarpentry.github.io/shell-novice/)
 
 ### Other Tutorials
