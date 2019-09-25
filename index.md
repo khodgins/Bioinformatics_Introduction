@@ -40,8 +40,8 @@ To get up to speed on working with a Unix system, take a look at the [unix help]
 1. [Topic 1](./Topic_1/) Workshop overview & sequencing technology and approaches (Day 1 AM)
     
     Lecture: Workshop overview and goals (Kay)
-             Sequencing technology and approaches ()
-    Tutorial: Logging onto the server  (Damien, Jerico)
+             Sequencing technology and approaches (Matt Tinning, NGS manager of AGRF)
+    Tutorial: R intro  (Sonika)
 2. [Topic 2](./Topic_2/)  Command line introduction (Day 1 PM)
     Tutorial: Command line introduction (Damien) 
 3. [Topic 3](./Topic_3/) Sequence file formats and quality control/trimming (Day 2 AM)
