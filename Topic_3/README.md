@@ -48,7 +48,7 @@ Move into your ~/Topic_3/data folder and execute the following commands:
 perl ~/Topic_3/scripts/prinseq-lite-0.20.4/prinseq-lite.pl -fastq ~/Topic_3/data/PmdT_147_100k_R1.fq -fastq2 ~/Topic_3/data/PmdT_147_100k_R2.fq -graph_data pmdt_147_100k_graph.txt 
 ```
 
-Open Firefox on the VM and upload you file and upload it to http://edwards.sdsu.edu/cgi-bin/prinseq/prinseq.cgi to view your graphs
+Open Firefox on the VM and upload your pmdt_147_100k_graph.txt file to http://edwards.sdsu.edu/cgi-bin/prinseq/prinseq.cgi to view your graphs
 
 Alternatively, download your graph file to your computer. You can do so by using the following command (note that you should execute this command in a terminal window that is not connected to the server and use your own login information for the username and ip address)
 
