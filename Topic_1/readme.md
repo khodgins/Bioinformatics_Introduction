@@ -17,7 +17,6 @@ How to login to training VM
 The login URL/site is below: https://sbs-broker.erc.monash.edu/ 
 
 Loading this URL in any browser will display the main/login page:
-
-
+![](Screen Shot 2019-09-09 at 12.04.10 pm.png)
 
 
