@@ -56,14 +56,14 @@ To get up to speed on working with a Unix system, take a look at the [unix help]
     
     Lecture: SNP and variant calling (Greg) 
     Tutorial: Call variants for GBS (Greg) 
-6. [Topic 6](./Topic_6-7/) Population genomics (Day 3 PM) 
+6. [Topic 6](./Topic_6-7/) Population genomics (Day 4 AM) 
     
     Lecture: Population genomics (Greg)
     Tutorial: Population genomics (Greg)
 7. [Topic 7](./Topic_6-7/) Population genomics and plotting in R (Day 4 AM) 
     
     Tutorial: Population genomics and plotting in R (Greg)
-8. [Topic 8](./Topic_8/) Phylogenetics (Day 4 PM) (Matt)
+8. [Topic 8](./Topic_8/) Phylogenetics (Day 3 PM) (Matt) - NOTE: Due to a scheduling conflict the Phylogenetics Topic will be Day 3 PM
 9. [Topic 9](./Topic_9/) Genome assembly (Day 5 AM) (Sonika)
 10. [Topic 10](./Topic_10/) RNAseq + differential expression analysis (Day 5 PM) (Sonika)
 
