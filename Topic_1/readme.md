@@ -41,7 +41,7 @@ Acknowledgements
 The training VMs have been kindly provided by the Monash eResearch platform at the Monash University. Mr Jerico Revote has provided his technical expertise in setting those up.
 
 
-Express Introduction to R
+## Express Introduction to R
 
 This quick introductory module introduces the basics of working with data using the R language. In this section we will cover variables, indexing, read in data, indexing dataframe.
 
