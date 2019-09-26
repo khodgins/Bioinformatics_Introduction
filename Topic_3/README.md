@@ -42,13 +42,15 @@ tar -xf prinseq-lite-0.20.4.tar.gz
 However, this is already done for you!
 
 
-move into your ~/Topic_3/data folder and execute the following commands:
+Move into your ~/Topic_3/data folder and execute the following commands:
 
 ```bash
 perl ~/Topic_3/scripts/prinseq-lite-0.20.4/prinseq-lite.pl -fastq ~/Topic_3/data/PmdT_147_100k_R1.fq -fastq2 ~/Topic_3/data/PmdT_147_100k_R2.fq -graph_data pmdt_147_100k_graph.txt 
 ```
 
-Download your graph file to your computer. You can do so by using the following command (note that you should execute this command in a terminal window that is not connected to the server and use your own login information for the username and ip address)
+Open Firefox on the VM and upload you file and upload it to http://edwards.sdsu.edu/cgi-bin/prinseq/prinseq.cgi to view your graphs
+
+Alternatively, download your graph file to your computer. You can do so by using the following command (note that you should execute this command in a terminal window that is not connected to the server and use your own login information for the username and ip address)
 
 ```bash
 scp <username@ip.address>:~/Topic_3/*graph.txt <path on your computer where you want the file>
@@ -56,13 +58,6 @@ scp <username@ip.address>:~/Topic_3/*graph.txt <path on your computer where you 
 
 For example:
 scp -rp trainee1@sbs-01.erc.monash.edu:~/Topic_3/*graph.txt ~/Dropbox/Documents/bioinformatics_workshop/bioinformatics_workshop_2019_Monash/Topic_3/
-
-and upload it to http://edwards.sdsu.edu/cgi-bin/prinseq/prinseq.cgi to view/download your graphs
-
-
-```bash
-perl ~/Topic_3/scripts/prinseq-lite-0.20.4/prinseq-graphs.pl -i pmdt_147_100k_graph.txt -o pmdt_147_100k_out_graphs.txt -html_all 
-```
 
 For a description of the various plot types, see:
 
@@ -141,7 +136,7 @@ There is no best option for trimming/filtering. The choices you make should refl
 
 # Manipulating files in UNIX and bash 
 
-Below are a bunch of examples for how to manipulate files. They are intended to provide an introduction to the kinds of things you can do in unix, and give you an idea of where to google to find more info. Generally, I have found that googling for what you want to do will almost always yield a scripting solution, often a very easy one using either awk, grep, sed, or some other bash command. 
+Below are a number of examples demonstrating various ways to quickly manipulate files. They are intended to provide an introduction to the kinds of things you can do in unix, and give you an idea of where to google to find more info. Generally, I have found that googling for what you want to do will almost always yield a scripting solution, often a very easy one using either awk, grep, sed, or some other bash command. 
 
 - To cancel any command, type "control-c". To pause it and send it to run in the background, type "control-z" and then "bg". To bring the job back to the foreground, type "fg"
 
