@@ -9,7 +9,7 @@ Most Monash Users conducting bioinformatics will use M3. M3 is the third stage o
 
 The intro to commandline that we will be working through today is found at https://tsonika.github.io/NGS-SBS-Monash2019/cli/handout/handout/
 
-Below is an additional recommended tutorial for those that would like more practice
+Below is an additional recommended tutorial for those that would like more practice with commandline
 
 ### Accompanying material
 
