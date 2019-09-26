@@ -20,26 +20,42 @@ The first step is to set up a directory structure so the resulting files will be
 cd ~
 
 #Copy the reference directory to your working directory
-cp -r /mnt/data/ref ./
+cp -r Desktop/population_genomics/data/ref/ ./
 
 #Copy the fastq files to your working directory
-cp -r /mnt/data/fastq ./
+cp -r Desktop/population_genomics/data/fastq/ ./
 
 #Make a new directory for your resulting bam files
 mkdir bam
 
+```
+
+We also want to install a new version of samtools, to learn how to install a program yourself
+```bash
+#First we download the program
+wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2
+
+#Then we unzip it
+tar -xjf samtools-1.9.tar.bz2
+
+#Then we install it
+cd samtools-1.9/
+
+./configure; ./make
+
+cd ..
 ```
 Once that is done, we have to index our reference genome.
 
 ```bash
 #Index the reference for BWA. 
 
-/mnt/bin/bwa-0.7.17/bwa index ref/HanXRQr1.0-20151230.1mb.fa
+bwa index ref/HanXRQr1.0-20151230.1mb.fa
 
 ```
 Now finally we can run BWA and align our data
 ```bash
-/mnt/bin/bwa-0.7.17/bwa mem \
+bwa mem \
   ref/HanXRQr1.0-20151230.1mb.fa \
   fastq/ANN1133.R1.fastq.gz \
   fastq/ANN1133.R2.fastq.gz \
@@ -49,7 +65,7 @@ Now finally we can run BWA and align our data
   
 ```
 Lets break this command down since it has several parts:
-**/mnt/bin/bwa-0.7.17/bwa** <= We're calling the program _bwa_ from the directory _/mnt/bin/bwa-0.7.17_. This is the full path to that program so you can call this no matter where you are in the file system.
+**bwa** <= We're calling the program _bwa_. It's installed in the /usr/local directory, which is in the default search path, so we don't need to specify a path to the program. 
 
 **mem** <= This is the bwa command we are calling. It is specific to bwa and not a unix command.
 
@@ -79,24 +95,23 @@ less -S bam/ANN1133.sam
 ```
 Lets examine the sam file. It contains all the information on the reads from the fastq file, but also alignment information. 
 ### Questions:
-1. How are reads ordered in the sam file? 
-2. What does the 6th column represent? What would the string "1S93M6S" mean?
-3. What are three possible reasons why mapping quality could be low for a particular read?
-4. What percent of your reads mapped to the genome? Hint: <span>Samtools</span>{: .spoiler}
+1. What does the 6th column represent? What would the string "1S93M6S" mean?
+2. What are three possible reasons why mapping quality could be low for a particular read?
+3. What percent of your reads mapped to the genome? Hint: <span>Samtools</span>{: .spoiler}
 
 ```bash
 
-#The next step is to convert our same file (human readable) to a 
+#The next step is to convert our sam file (human readable) to a 
 #bam file (machine readable) and sort reads by their aligned position.
-samtools view -bh bam/ANN1133.sam | samtools sort > bam/ANN1133.sort.bam 
+~/samtools-1.9/samtools view -bh bam/ANN1133.sam | ~/samtools-1.9/samtools sort > bam/ANN1133.sort.bam 
 ```
 With this command we're using the pipe "|" to pass data directly between commands without saving the intermediates. This makes the command faster since its not saving the intermediate file to hard disk (which is slower). It can be more risky though because if any steps fails you have to start from the beginning. 
 
 
 Next we want to take a look at our aligned reads. First we index the file, then we use samtools tview.
 ```bash
-samtools index bam/ANN1133.sort.bam  
-samtools tview bam/ANN1133.sort.bam  --reference ref/HanXRQr1.0-20151230.1mb.fa
+~/samtools-1.9/samtools index bam/ANN1133.sort.bam  
+~/samtools-1.9/samtools tview bam/ANN1133.sort.bam  --reference ref/HanXRQr1.0-20151230.1mb.fa
 #use ? to open the help menu. Scroll left and right with H and L. 
 #Try to find positions where the sample doesn't have the reference allele. 
 ```
@@ -142,7 +157,7 @@ MORE HINTS:
   #First set up variable names
   bam=~/bam
   fastq=~/fastq
-  bwa=/mnt/bin/bwa-0.7.17/bwa
+  samtools=~/samtools-1.9/samtools
   ref_file=~/ref/HanXRQr1.0-20151230.1mb.fa
 
   #Then get a list of sample names, without suffixes
@@ -151,16 +166,16 @@ MORE HINTS:
   #Then loop through the samples
   while read name
   do
-    $bwa mem \
+    bwa mem \
     -R "@RG\tID:$name\tSM:$name\tPL:ILLUMINA" \
     $ref_file \
     $fastq/$name.R1.fastq.gz \
     $fastq/$name.R2.fastq.gz \
     -t 1 > $bam/$name.sam;
 
-    samtools view -bh $bam/$name.sam |\
-    samtools sort > $bam/$name.sort.bam;
-    samtools index $bam/$name.sort.bam
+    $samtools view -bh $bam/$name.sam |\
+    $samtools sort > $bam/$name.sort.bam;
+    $samtools index $bam/$name.sort.bam
   done < $bam/samplelist.txt
 ```
 </details>
