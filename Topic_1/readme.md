@@ -22,20 +22,24 @@ Login using your assigned username and password, which we will provide
 Upon login to the URL/site above, the assigned instance is shown:
 
 ![](Screen_shot_two.png)
+{:width="70%"}
 
 Click on the Reconnect link to then connect to the instance’s remote desktop (via HTML5 viewer). The instance’s desktop environment is then displayed:
 
 ![](Screen_shot_three.png)
+{:width="70%"}
 
 Training modules (e.g qc, cli) contain datasets required for each module. There is precomputed data for some of the section, please DO NOT DELETE.
 
 Terminal/shell is available from the bottom tools bar:
 
 ![](Screen_shot_four.png)
+{:width="70%"}
 
 RStudio and firefox is also installed
 
 ![](Screen_shot_five.png)
+{:width="70%"}
 
 Acknowledgements
 The training VMs have been kindly provided by the Monash eResearch platform at the Monash University. Mr Jerico Revote has provided his technical expertise in setting those up.
