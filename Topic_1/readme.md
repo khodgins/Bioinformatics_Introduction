@@ -13,4 +13,13 @@ Accompanying material:
 * [Slides](./Topic 1.pdf)
 
 
+How to login to training VM
+The login URL/site is below: https://sbs-broker.erc.monash.edu/ 
+
+Loading this URL in any browser will display the main/login page:
+
+
+
+
+
 
