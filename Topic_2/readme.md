@@ -7,10 +7,9 @@ topictitle: "Cmdline"
 
 Most Monash Users conducting bioinformatics will use M3. M3 is the third stage of MASSIVE, which is a High Performance Computing (HPC) facility designed specifically to process complex data. For more information about M3 including how to get an account, log on and submit jobs, please visit https://docs.massive.org.au/M3/slurm/slurm-overview.html
 
-In this tutorial we will be going through parts of several software
-carpentry workshops. Right now, just code along with me, but after
-the lesson you can go through the tutorial on your own to clarify any
-understanding problems.
+The intro to commandline that we will be working through today is found at https://tsonika.github.io/NGS-SBS-Monash2019/cli/handout/handout/
+
+Below is an additional recommended tutorial for those that would like more practice
 
 ### Accompanying material
 
