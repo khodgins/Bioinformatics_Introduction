@@ -37,12 +37,11 @@ The course material is organized in several topics, with slides and coding examp
 To get up to speed on working with a Unix system, take a look at the [unix help](resources/unix_ref.pdf) file. There are some resources there that will help you find the specific command you need for each task.
 
 ## Syllabus
-1. [Topic 1](./Topic_1/) Workshop overview & sequencing technology and approaches (Day 1 AM)
+1. [Topic 1](./Topic_1/) Welcome Workshop overview (Day 1 AM)
     
-    Lecture: Workshop overview and goals (Kay)
-             Sequencing technology and approaches ()
-    Tutorial: Logging onto the server  (Damien, Jerico)
-2. [Topic 2](./Topic_2/)  Command line introduction (Day 1 PM)
+    Lecture: Sequencing technology and approaches (Matt Tinning AGRF)
+    Tutorial: Logging onto the server  (Sonika)
+2. [Topic 2]()  Command line introduction (Day 1 PM)
     Tutorial: Command line introduction (Damien) 
 3. [Topic 3](./Topic_3/) Sequence file formats and quality control/trimming (Day 2 AM)
 
@@ -64,8 +63,8 @@ To get up to speed on working with a Unix system, take a look at the [unix help]
     
     Tutorial: Population genomics and plotting in R (Greg)
 8. [Topic 8](./Topic_8/) Phylogenetics (Day 4 PM) (Matt)
-9. [Topic 9](./Topic_9/) Genome assembly (Day 5 AM) (Sonika)
-10. [Topic 10](./Topic_10/) RNAseq + differential expression analysis (Day 5 PM) (Sonika)
+9. [Topic 9]() Genome assembly (Day 5 AM) (Sonika)
+10. [Topic 10]() RNAseq + differential expression analysis (Day 5 PM) (Sonika)
 
 ## Obtaining all the files on this site
 
