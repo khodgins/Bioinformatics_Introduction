@@ -173,7 +173,7 @@ You've done it! We have a VCF. Tomorrow we will fliter this file and use it for 
 * Take the original vcf file produced and create a vcf of only high biallelic SNPs for ANN samples. 
 * Use bcftools to filter your vcf file and select for sites with alternate allele frequencies > 0.01, including multi-allelic sites. 
 
-### Daily assignments
+### Challenge questions
 1. Another program that is useful for filtering and formatting vcf files is [vcftools](https://vcftools.github.io/index.html). It is installed on the server. It can also do basic pop gen stats. Use it to calculate Fst between samples with ARG and ANN names.
 2. You're trying to create a very stringent set of SNPs. Based on the site information GATK produces, what filters would you use? Include the actual GATK abbreviations.
 3. What is strand bias and why would you filter based on it?
