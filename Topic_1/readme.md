@@ -10,10 +10,9 @@ Accompanying material:
 
 * [Intro Slides](./Topic1_intro.pdf)
 
-How to login to training VM (instructions are also * [here](https://tsonika.github.io/NGS-SBS-Monash2019/login/login/) 
+How to login to training VM (instructions are also [here](https://tsonika.github.io/NGS-SBS-Monash2019/login/login/) 
 
-The login URL/site is below: 
-* [https://sbs-broker.erc.monash.edu/] 
+Open the [login URL/site](https://sbs-broker.erc.monash.edu/)
 
 Loading this URL in any browser will display the main/login page:
 ![](Screen_shot_one.png){:width="70%"}
@@ -46,4 +45,4 @@ The training VMs have been kindly provided by the Monash eResearch platform at t
 
 This quick introductory module introduces the basics of working with data using the R language. In this section we will cover variables, indexing, read in data, indexing dataframe.
 
-We will use lesson material from the * [Carpentries] (./https://datacarpentry.org/R-genomics/01-intro-to-R.html)
+We will use lesson material from the [Carpentries](https://datacarpentry.org/R-genomics/01-intro-to-R.html)
