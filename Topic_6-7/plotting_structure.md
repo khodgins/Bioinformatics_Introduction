@@ -5,9 +5,7 @@ topictitle: "Plotting in R"
 datafiles: [1,2,3,4]
 ---
 
-We're working with Rstudio on our desktops, so download the "vcf" and "analysis" directories to your laptop. The rest of this tutorial should be run in your Rstudio IDE. 
-
-NOTE: This tutorial is based on Rstudio 1.2.1335 and R 3.6.1, the latest version of both. Almost all steps should work identically on older versions, but there may be issues installing some packages. In this case, I recommend updating your version of R unless you have a specific reason not to. 
+For the R portions of this, we're going to be using Rstudio. 
 
 
 The first step to any organized R project is to create a new Rstudio project. A project keeps all your different scripts and results together in a single directory. It also separates saved variables, so when you are switching between different projects you aren't accidentally using the same variables between them. 
@@ -22,18 +20,23 @@ Click on "New Project".
 
 ![](rstudio_project_2.jpeg)
 
-Enter directory name "biol525d" and put it somewhere you can get to. In my case, I put it on the Desktop directory. Finally, click "Create Project".
+Enter directory name "pop_gen" and put it somewhere you can get to. In my case, I put it on the ~ directory. Finally, click "Create Project".
 
 ![](rstudio_project_3.jpeg)
 
-After it has been created, move your "analysis" and "vcf" directory into your biol525d project directory so you have easy access to those files.
+After it has been created, move your "analysis" and "vcf" directory into your pop_gen project directory so you have easy access to those files.
 
+```bash
+cp -r ~/analysis ~/pop_gen/
+cp -r ~/vcf ~/pop_gen/
+```
 
 You're now in your Rstudio Project and the next step is to install the tidyverse package, which includes a suite of tools for manipulating data and plotting. The examples today will be focused on tidyverse solutions to problems. One key feature of the tidyverse world is the use of "%>%" to pipe data between commands. This functions similar to "\|" in the commandline and helps put together strings of commands that are work together and are easy to understand. 
 
 
 
 ``` r
+#Run all following commands in Rstudio
 install.packages("tidyverse") 
 library(tidyverse)
 ```
