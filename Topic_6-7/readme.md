@@ -8,13 +8,13 @@ topictitle: "Population genomics"
 ## Accompanying material
 * [Slides](./Topic 8.pdf)
 
-## Daily Questions:
+## Challenge Questions:
 1. For a site that is invariant in both populations (i.e. a locus with no variation), what is Fst?
 2. What effect does missing data have on a PCA?
 3. What is the average Fst between ARG and ANN samples in our dataset? Hint, SNPrelate can calculate Fst.
 
 ### NOTE:
-* If you didn't complete creating _full_genome.vcf.gz_ in Topic 7, you can copy it to ~/vcf from /mnt/data/vcf
+* If you didn't complete creating _full_genome.vcf.gz_ in Topic 5, you can copy it to ~/vcf from /mnt/data/vcf
 
 
 Last topic we called variants across the three chromosomes. If you look at the VCF, you'll notice there are a lot of sites only genotyped in a small subset of the samples. This can happen with lower overall read depth (in this case this is whole genome sequencing at ~7X depth), but can be due to other factors like divergence been sample and reference. We also have indels, and SNPs with more than two alleles. Many programs strictly require biallelic sites so lets first filter the VCF to a smaller set of usable sites.
@@ -47,7 +47,7 @@ A common first pass analysis is to use structure to look at clustering in your d
 ```bash
 cd ~/
 mkdir analysis
-/mnt/bin/plink --make-bed \
+plink --make-bed \
 	--vcf vcf/full_genome.filtered.vcf.gz \
 	--out vcf/full_genome.filtered \
 	--set-missing-var-ids @:# \
@@ -59,7 +59,7 @@ This produces files with the suffix .nosex, .log, .fam, .bim, .bed. We can use t
 NOTE: When using admixture you should filter your VCF for linkage (i.e. remove highly linked sites). We're going to do this later during the PCA step, so for now we're using our whole set. If you can't filter for linkage, subsetting the site also helps (i.e. selecting every 10th site).
 
 ```bash 
-/mnt/bin/admixture_linux-1.3.0/admixture full_genome.filtered.bed 2
+admixture full_genome.filtered.bed 2
 ```
 Uh oh that doesn't work, it produces this error message.
 ```bash
@@ -85,19 +85,19 @@ zcat vcf/full_genome.filtered.vcf.gz |\
 	sed s/^HanXRQChr//g |\
 	gzip > vcf/full_genome.filtered.numericChr.vcf.gz
 	
-/mnt/bin/plink --make-bed \
+plink --make-bed \
 	--vcf vcf/full_genome.filtered.numericChr.vcf.gz \
 	--out vcf/full_genome.filtered.numericChr \
 	--set-missing-var-ids @:# \
 	--double-id \
 	--allow-extra-chr
 
-/mnt/bin/admixture_linux-1.3.0/admixture --cv vcf/full_genome.filtered.numericChr.bed 2
+admixture --cv vcf/full_genome.filtered.numericChr.bed 2
 ```
 This works! With only 10 samples and ~6500 SNPs it finished almost completely. We only ran it for one value of K (2) but we should also test different K values and select the best K value.
 ```bash 
 for K in 1 2 3 4 5; \
-do /mnt/bin/admixture_linux-1.3.0/admixture --cv vcf/full_genome.filtered.numericChr.bed $K |\
+do admixture --cv vcf/full_genome.filtered.numericChr.bed $K |\
 tee full_genome.filtered.numericChr.${K}.out; \
 done
 #NOTE: "tee" takes the output of a command and saves it to a file, while 
