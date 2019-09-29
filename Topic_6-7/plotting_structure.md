@@ -150,7 +150,7 @@ all_data %>%
   facet_wrap(~k,ncol=1)
 ```
 
-![](structure_3.jpg)
+![](structure_3a.jpg)
 
 
 Plotting challenge 1
