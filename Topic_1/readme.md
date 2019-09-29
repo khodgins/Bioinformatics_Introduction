@@ -10,6 +10,8 @@ Accompanying material:
 
 * [Intro Slides](./Topic1_intro.pdf)
 
+Click here for the [R intro](https://tsonika.github.io/NGS-SBS-Monash2019/R/Rhandout/)
+
 How to login to training VM (instructions are also [here](https://tsonika.github.io/NGS-SBS-Monash2019/login/login/) )
 
 Open the [login URL/site](https://sbs-broker.erc.monash.edu/)
