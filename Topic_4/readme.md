@@ -164,9 +164,9 @@ MORE HINTS:
 </details>
 
 After your final bam files are created, and you've checked that they look good, you should remove intermediate files to save space. You can build file removal into your bash scripts, but it is often helpful to only add that in once the script works. It's hard to troubleshoot a failed script if it deletes everything as it goes.
-### By topic 7, you should have created cleaned bam files for all samples.
+### By topic 5, you should have created cleaned bam files for all samples.
 
-## Daily assignments
+## Challenge questions
 1. Is an alignment with a higher percent of mapped reads always better than one with a lower percent? Why or why not?
 2. I want to reduce the percent of incorrectly mapped reads when using BWA. What setting or settings should I change in BWA?
 3. What are two ways that could be used to evaluate which aligner is best?
