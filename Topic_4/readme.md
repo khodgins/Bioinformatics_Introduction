@@ -20,30 +20,16 @@ The first step is to set up a directory structure so the resulting files will be
 cd ~
 
 #Copy the reference directory to your working directory
-cp -r Desktop/population_genomics/data/ref/ ./
+cp -r /mnt/workshop/Topic_3/ref ./
 
 #Copy the fastq files to your working directory
-cp -r Desktop/population_genomics/data/fastq/ ./
+cp -r /mnt/workshop/Topic_3/fastq ./
 
 #Make a new directory for your resulting bam files
 mkdir bam
 
 ```
 
-We also want to install a new version of samtools, to learn how to install a program yourself
-```bash
-#First we download the program
-wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2
-
-#Then we unzip it
-tar -xjf samtools-1.9.tar.bz2
-
-#Then we install it
-cd samtools-1.9/
-
-./configure; ./make
-
-cd ..
 ```
 Once that is done, we have to index our reference genome.
 
@@ -103,15 +89,15 @@ Lets examine the sam file. It contains all the information on the reads from the
 
 #The next step is to convert our sam file (human readable) to a 
 #bam file (machine readable) and sort reads by their aligned position.
-~/samtools-1.9/samtools view -bh bam/ANN1133.sam | ~/samtools-1.9/samtools sort > bam/ANN1133.sort.bam 
+samtools view -bh bam/ANN1133.sam | samtools sort > bam/ANN1133.sort.bam 
 ```
 With this command we're using the pipe "|" to pass data directly between commands without saving the intermediates. This makes the command faster since its not saving the intermediate file to hard disk (which is slower). It can be more risky though because if any steps fails you have to start from the beginning. 
 
 
 Next we want to take a look at our aligned reads. First we index the file, then we use samtools tview.
 ```bash
-~/samtools-1.9/samtools index bam/ANN1133.sort.bam  
-~/samtools-1.9/samtools tview bam/ANN1133.sort.bam  --reference ref/HanXRQr1.0-20151230.1mb.fa
+samtools index bam/ANN1133.sort.bam  
+samtools tview bam/ANN1133.sort.bam  --reference ref/HanXRQr1.0-20151230.1mb.fa
 #use ? to open the help menu. Scroll left and right with H and L. 
 #Try to find positions where the sample doesn't have the reference allele. 
 ```
@@ -155,13 +141,10 @@ MORE HINTS:
 </summary>
 ```bash
   #First set up variable names
-  bam=~/bam
-  fastq=~/fastq
-  samtools=~/samtools-1.9/samtools
   ref_file=~/ref/HanXRQr1.0-20151230.1mb.fa
 
   #Then get a list of sample names, without suffixes
-  ls $fastq | grep R1.fastq.gz | sed s/.R1.fastq.gz//g > $bam/samplelist.txt
+  ls fastq | grep R1.fastq.gz | sed s/.R1.fastq.gz//g > bam/samplelist.txt
 
   #Then loop through the samples
   while read name
@@ -169,14 +152,14 @@ MORE HINTS:
     bwa mem \
     -R "@RG\tID:$name\tSM:$name\tPL:ILLUMINA" \
     $ref_file \
-    $fastq/$name.R1.fastq.gz \
-    $fastq/$name.R2.fastq.gz \
-    -t 1 > $bam/$name.sam;
+    fastq/$name.R1.fastq.gz \
+    fastq/$name.R2.fastq.gz \
+    -t 1 > bam/$name.sam;
 
-    $samtools view -bh $bam/$name.sam |\
-    $samtools sort > $bam/$name.sort.bam;
-    $samtools index $bam/$name.sort.bam
-  done < $bam/samplelist.txt
+    samtools view -bh bam/$name.sam |\
+    samtools sort > bam/$name.sort.bam;
+    samtools index bam/$name.sort.bam
+  done < bam/samplelist.txt
 ```
 </details>
 
