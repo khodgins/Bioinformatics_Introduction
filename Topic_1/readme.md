@@ -27,7 +27,7 @@ Click on the Reconnect link to then connect to the instance’s remote desktop (
 
 ![](Screen_shot_three.png){:width="70%"}
 
-Training modules (e.g qc, cli) contain datasets required for each module. There is precomputed data for some of the section, please DO NOT DELETE.
+Training modules (e.g qc, cli) contain datasets required for each module. 
 
 Terminal/shell is available from the bottom tools bar:
 
