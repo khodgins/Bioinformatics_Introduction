@@ -8,7 +8,7 @@ topictitle: R intro
 Accompanying material:
 ---------------------
 
-* [Slides](./Topic 1.pdf)
+* [Intro Slides](./Topic1_intro.pdf)
 
 How to login to training VM (please also see https://tsonika.github.io/NGS-SBS-Monash2019/login/login/)
 
