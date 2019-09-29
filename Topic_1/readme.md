@@ -37,12 +37,3 @@ RStudio and firefox is also installed
 
 ![](Screen_shot_five.png){:width="70%"}
 
-Acknowledgements
-The training VMs have been kindly provided by the Monash eResearch platform at the Monash University. Mr Jerico Revote has provided his technical expertise in setting those up.
-
-
-## Express Introduction to R
-
-This quick introductory module introduces the basics of working with data using the R language. In this section we will cover variables, indexing, read in data, indexing dataframe.
-
-We will use lesson material from the [Carpentries](https://datacarpentry.org/R-genomics/01-intro-to-R.html)
