@@ -7,5 +7,5 @@ topictitle: "RNASeq Analysis"
 
 ## Accompanying material
 
-* [Slides](./rnaseq_lecture_2019.pdf)
+Please visit [https://tsonika.github.io/NGS-SBS-Monash2019/rna_seq/handout/handout/](https://tsonika.github.io/NGS-SBS-Monash2019/rna_seq/handout/handout/)
 
