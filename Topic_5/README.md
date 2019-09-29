@@ -19,11 +19,7 @@ mkdir gvcf
 mkdir db
 mkdir vcf
 ```
-We also have a few programs we're going to use. Since we will be calling them repeatedly, its helpful to save their full path to a variable. This will only last for the current session so if you log out you'll have to set them up again.
-```bash
-gatk=/mnt/bin/gatk-4.1.2.0/gatk
-picard=/mnt/bin/picard.jar
-```
+
 
 There are 10 different samples and we're going to have to run multiple steps on each. To make this easier, we make a list of all the sample names.
 ```bash
@@ -45,9 +41,9 @@ The first step is to make duplicate reads using picardtools. If you were using G
 ```bash
 
 while read name; do
-  java -jar $picard MarkDuplicates \
-  I=bam/$name.sort.bam O=bam/$name.sort.dedup.bam \
-  M=log/$name.duplicateinfo.txt
+  gatk MarkDuplicates \
+  -I bam/$name.sort.bam -O bam/$name.sort.dedup.bam \
+  -M log/$name.duplicateinfo.txt
   samtools index bam/$name.sort.dedup.bam
 done < samplelist.txt
 
@@ -58,7 +54,7 @@ Now in the bam files duplicate reads are flagged. Take a look in the log directo
 
 To use GATK, we have to index our reference genome. An index is a way to allow rapid access to a very large file. For example, it can tell the program that the third chromosome starts at bit 100000, so when the program wants to access that chromosome it can jump directly there rather than scan the whole file. Some index files are human readable (like .fai files) while others are not.
 ```bash
-java -jar $picard CreateSequenceDictionary R= ref/HanXRQr1.0-20151230.1mb.fa O= ref/HanXRQr1.0-20151230.1mb.dict
+gatk CreateSequenceDictionary -R ref/HanXRQr1.0-20151230.1mb.fa -O ref/HanXRQr1.0-20151230.1mb.dict
 
 samtools faidx ref/HanXRQr1.0-20151230.1mb.fa
 ```
@@ -72,7 +68,7 @@ This step can take a few minutes so lets first test it with a single sample to m
 ```
 for name in `cat ~/samplelist.txt | head -n 1`
 do
-$gatk --java-options "-Xmx15g" HaplotypeCaller \
+gatk --java-options "-Xmx15g" HaplotypeCaller \
    -R ref/HanXRQr1.0-20151230.1mb.fa \
    -I bam/$name.sort.dedup.bam \
    --native-pair-hmm-threads 3 \
@@ -130,7 +126,7 @@ Lets break down this loop to understand how its working
 
 Next we call GenomicsDBImport to actually create the database.
 ```bash
-$gatk --java-options "-Xmx10g -Xms10g" \
+gatk --java-options "-Xmx10g -Xms10g" \
        GenomicsDBImport \
        --genomicsdb-workspace-path db/HanXRQChr01 \
        --batch-size 50 \
@@ -141,7 +137,7 @@ $gatk --java-options "-Xmx10g -Xms10g" \
 
 With the genomicsDB created, we're finally ready to actually call variants and output a vcf
 ```bash
-$gatk --java-options "-Xmx10g" GenotypeGVCFs \
+gatk --java-options "-Xmx10g" GenotypeGVCFs \
    -R ref/HanXRQr1.0-20151230.1mb.fa \
    -V gendb://db/HanXRQChr01 \
    -O vcf/HanXRQChr01.vcf.gz
@@ -177,7 +173,7 @@ You've done it! We have a VCF. Tomorrow we will fliter this file and use it for 
 * Take the original vcf file produced and create a vcf of only high biallelic SNPs for ANN samples. 
 * Use bcftools to filter your vcf file and select for sites with alternate allele frequencies > 0.01, including multi-allelic sites. 
 
-### Daily assignments
+### Challenge questions
 1. Another program that is useful for filtering and formatting vcf files is [vcftools](https://vcftools.github.io/index.html). It is installed on the server. It can also do basic pop gen stats. Use it to calculate Fst between samples with ARG and ANN names.
 2. You're trying to create a very stringent set of SNPs. Based on the site information GATK produces, what filters would you use? Include the actual GATK abbreviations.
 3. What is strand bias and why would you filter based on it?
