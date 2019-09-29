@@ -10,7 +10,7 @@ Accompanying material:
 
 * [Intro Slides](./Topic1_intro.pdf)
 
-How to login to training VM (instructions are also * [here] (https://tsonika.github.io/NGS-SBS-Monash2019/login/login/) 
+How to login to training VM (instructions are also * [here](https://tsonika.github.io/NGS-SBS-Monash2019/login/login/) 
 
 The login URL/site is below: 
 * [https://sbs-broker.erc.monash.edu/] 
