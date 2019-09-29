@@ -19,11 +19,7 @@ mkdir gvcf
 mkdir db
 mkdir vcf
 ```
-We also have a few programs we're going to use. Since we will be calling them repeatedly, its helpful to save their full path to a variable. This will only last for the current session so if you log out you'll have to set them up again.
-```bash
-gatk=/mnt/bin/gatk-4.1.2.0/gatk
-picard=/mnt/bin/picard.jar
-```
+
 
 There are 10 different samples and we're going to have to run multiple steps on each. To make this easier, we make a list of all the sample names.
 ```bash
@@ -45,7 +41,7 @@ The first step is to make duplicate reads using picardtools. If you were using G
 ```bash
 
 while read name; do
-  java -jar $picard MarkDuplicates \
+  gatk MarkDuplicates \
   I=bam/$name.sort.bam O=bam/$name.sort.dedup.bam \
   M=log/$name.duplicateinfo.txt
   samtools index bam/$name.sort.dedup.bam
