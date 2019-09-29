@@ -10,10 +10,10 @@ Accompanying material:
 
 * [Intro Slides](./Topic1_intro.pdf)
 
-How to login to training VM (please also see * [https://tsonika.github.io/NGS-SBS-Monash2019/login/login/] (./https://docs.massive.org.au/M3/slurm/slurm-overview.html))
+How to login to training VM (instructions are also * [here] (https://tsonika.github.io/NGS-SBS-Monash2019/login/login/) 
 
 The login URL/site is below: 
-* [https://sbs-broker.erc.monash.edu/] (./https://docs.massive.org.au/M3/slurm/slurm-overview.html)
+* [https://sbs-broker.erc.monash.edu/] 
 
 Loading this URL in any browser will display the main/login page:
 ![](Screen_shot_one.png){:width="70%"}
