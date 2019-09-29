@@ -42,8 +42,8 @@ The first step is to make duplicate reads using picardtools. If you were using G
 
 while read name; do
   gatk MarkDuplicates \
-  I=bam/$name.sort.bam O=bam/$name.sort.dedup.bam \
-  M=log/$name.duplicateinfo.txt
+  -I bam/$name.sort.bam -O bam/$name.sort.dedup.bam \
+  -M log/$name.duplicateinfo.txt
   samtools index bam/$name.sort.dedup.bam
 done < samplelist.txt
 
@@ -54,7 +54,7 @@ Now in the bam files duplicate reads are flagged. Take a look in the log directo
 
 To use GATK, we have to index our reference genome. An index is a way to allow rapid access to a very large file. For example, it can tell the program that the third chromosome starts at bit 100000, so when the program wants to access that chromosome it can jump directly there rather than scan the whole file. Some index files are human readable (like .fai files) while others are not.
 ```bash
-java -jar $picard CreateSequenceDictionary R= ref/HanXRQr1.0-20151230.1mb.fa O= ref/HanXRQr1.0-20151230.1mb.dict
+gatk CreateSequenceDictionary -R ref/HanXRQr1.0-20151230.1mb.fa -O ref/HanXRQr1.0-20151230.1mb.dict
 
 samtools faidx ref/HanXRQr1.0-20151230.1mb.fa
 ```
@@ -68,7 +68,7 @@ This step can take a few minutes so lets first test it with a single sample to m
 ```
 for name in `cat ~/samplelist.txt | head -n 1`
 do
-$gatk --java-options "-Xmx15g" HaplotypeCaller \
+gatk --java-options "-Xmx15g" HaplotypeCaller \
    -R ref/HanXRQr1.0-20151230.1mb.fa \
    -I bam/$name.sort.dedup.bam \
    --native-pair-hmm-threads 3 \
@@ -126,7 +126,7 @@ Lets break down this loop to understand how its working
 
 Next we call GenomicsDBImport to actually create the database.
 ```bash
-$gatk --java-options "-Xmx10g -Xms10g" \
+gatk --java-options "-Xmx10g -Xms10g" \
        GenomicsDBImport \
        --genomicsdb-workspace-path db/HanXRQChr01 \
        --batch-size 50 \
@@ -137,7 +137,7 @@ $gatk --java-options "-Xmx10g -Xms10g" \
 
 With the genomicsDB created, we're finally ready to actually call variants and output a vcf
 ```bash
-$gatk --java-options "-Xmx10g" GenotypeGVCFs \
+gatk --java-options "-Xmx10g" GenotypeGVCFs \
    -R ref/HanXRQr1.0-20151230.1mb.fa \
    -V gendb://db/HanXRQChr01 \
    -O vcf/HanXRQChr01.vcf.gz
