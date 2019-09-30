@@ -16,6 +16,10 @@ How to login to training VM (instructions are also [here](https://tsonika.github
 
 Open the [login URL/site](https://sbs-broker.erc.monash.edu/)
 
+Training accounts usernames were provided.
+
+Password: *1H3d%#X
+
 Loading this URL in any browser will display the main/login page:
 ![](Screen_shot_one.png){:width="70%"}
 
