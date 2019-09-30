@@ -51,11 +51,11 @@ To get up to speed on working with a Unix system, take a look at the [unix help]
 4. [Topic 4](./Topic_4/) Sequence alignment (Day 2 PM) 
     
     Lecture: Alignment algorithms and tools (Greg)
-    Tutorial:  Alignment of GBS reads (Greg)
+    Tutorial:  Alignment of NGS data (Greg)
 5. [Topic 5](./Topic_5/) Variant calling (Day 3 AM)
     
     Lecture: SNP and variant calling (Greg) 
-    Tutorial: Call variants for GBS (Greg) 
+    Tutorial: Call variants for NGS data (Greg) 
 6. [Topic 6](./Topic_6-7/) Population genomics (Day 4 AM) 
     
     Lecture: Population genomics (Greg)
