@@ -22,7 +22,7 @@ Click on "New Project".
 
 Enter directory name "pop_gen" and put it somewhere you can get to. In my case, I put it on the ~ directory. Finally, click "Create Project".
 
-![](rstudio_project_3.jpeg)
+![](rstudio_project_3a.jpeg)
 
 After it has been created, move your "analysis" and "vcf" directory into your pop_gen project directory so you have easy access to those files.
 
