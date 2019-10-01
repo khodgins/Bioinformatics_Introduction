@@ -14,10 +14,10 @@ The first step is again to set up directories to put our incoming files.
 ```bash
 
 cd ~
-mkdir log
-mkdir gvcf
-mkdir db
-mkdir vcf
+mkdir -p log
+mkdir -p gvcf
+mkdir -p db
+mkdir -p vcf
 ```
 
 
