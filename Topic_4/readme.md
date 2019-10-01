@@ -30,7 +30,7 @@ mkdir bam
 
 ```
 
-```
+
 Once that is done, we have to index our reference genome.
 
 ```bash
