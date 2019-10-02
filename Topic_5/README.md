@@ -44,7 +44,7 @@ while read name; do
   gatk MarkDuplicates \
   -I bam/$name.sort.bam -O bam/$name.sort.dedup.bam \
   -M log/$name.duplicateinfo.txt
-  samtools index bam/$name.sort.dedup.bam
+  samtools index bam/$name.sort.dedup.bam;
 done < samplelist.txt
 
 ```
