@@ -78,8 +78,18 @@ done
 ```
  Check your gvcf file to make sure it has a .idx index file. If the haplotypecaller crashes, it will produce a truncated gvcf file that will eventually crash the genotypegvcf step. Note that if you give genotypegvcf a truncated file without a idx file, it will produce an idx file itself, but it still won't work.
 
-We would run the HaplotypeCaller on the rest of the samples, but that will take too much time, so once you're satisfied that your script works, you can copy the rest of the gvcf files (+ idx files) from /mnt/data/gvcf into ~/gvcf.
-
+To run the rest of the samples, run the following command
+```
+for name in `cat ~/samplelist.txt | sed '1d' `
+do
+gatk --java-options "-Xmx15g" HaplotypeCaller \
+   -R ref/HanXRQr1.0-20151230.1mb.fa \
+   -I bam/$name.sort.dedup.bam \
+   --native-pair-hmm-threads 3 \
+   -ERC GVCF \
+   -O gvcf/$name.sort.dedup.g.vcf
+done
+```
 
 
 The next step is to import our gvcf files into a genomicsDB file. This is a compressed database representation of all the read data in our samples. It has two important features to remember:
