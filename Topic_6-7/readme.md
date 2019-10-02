@@ -138,6 +138,11 @@ ARG0028	0.999990 0.000010
 ```
 All the ANN samples are one group and all the ARG are a different group, which makes sense, since they are different species. We're going to plot these results, but before we leave the command line, lets also calculate Fst between the groups (or species in this case) using the perl tool vcf2fst.pl. This is a custom script from Greg, since we want to keep the numerator and denominator from the Fst calculations, which is hard to do.
 
+To get the file use this command:
+```
+scp -rp trainee35@sbs-35.erc.monash.edu:~/vcf2fst.pl ~/
+```
+
 We need two files, a sample info file and a group file. The sample info file tells the program which population each sample is in and the group file tells the program which populations to compare. We can make them here:
 
 ```
@@ -147,7 +152,7 @@ done > sampleinfo.txt
 echo -e "ANN\t1\nARG\t2" > popinfo.txt
 
 zcat vcf/full_genome.filtered.vcf.gz |\
-perl /mnt/bin/vcf2fst.pl sampleinfo.txt popinfo.txt \
+perl ~/vcf2fst.pl sampleinfo.txt popinfo.txt \
 > analysis/full_genome.filtered.fst.txt
 
 ```
