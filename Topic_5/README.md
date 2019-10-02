@@ -80,7 +80,7 @@ done
 
 To run the rest of the samples, run the following command
 ```
-for name in `cat ~/samplelist.txt | sed '1d' `
+for name in `cat ~/samplelist.txt`
 do
 gatk --java-options "-Xmx15g" HaplotypeCaller \
    -R ref/HanXRQr1.0-20151230.1mb.fa \
