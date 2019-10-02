@@ -90,6 +90,13 @@ gatk --java-options "-Xmx15g" HaplotypeCaller \
    -O gvcf/$name.sort.dedup.g.vcf
 done
 ```
+If your gvcfs did not finish you can copy the gvcf folder from trainee35 as follows
+
+```bash
+scp -rp trainee35@sbs-035.erc.monash.edu:~/gvcf ~/
+````
+enter the password when prompted
+
 
 
 The next step is to import our gvcf files into a genomicsDB file. This is a compressed database representation of all the read data in our samples. It has two important features to remember:
@@ -187,3 +194,5 @@ You've done it! We have a VCF. Tomorrow we will fliter this file and use it for 
 1. Another program that is useful for filtering and formatting vcf files is [vcftools](https://vcftools.github.io/index.html). It is installed on the server. It can also do basic pop gen stats. Use it to calculate Fst between samples with ARG and ANN names.
 2. You're trying to create a very stringent set of SNPs. Based on the site information GATK produces, what filters would you use? Include the actual GATK abbreviations.
 3. What is strand bias and why would you filter based on it?
+
+
