@@ -93,7 +93,7 @@ done
 If your gvcfs did not finish you can copy the gvcf folder from trainee35 as follows
 
 ```bash
-scp -rp trainee35@sbs-035.erc.monash.edu:~/gvcf ~/
+scp -rp trainee35@sbs-35.erc.monash.edu:~/gvcf ~/
 ````
 enter the password when prompted
 
