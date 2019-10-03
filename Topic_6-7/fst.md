@@ -47,6 +47,7 @@ window_size <- 50000
 
 #Take our Fst dataframe
 fst %>%
+   filter(!is.na(N1)) %>%
    #Filter to only include the 1st chromosome
    filter(chr == "HanXRQChr01") %>%
    #Create a new column with the window for each position. 
@@ -69,6 +70,7 @@ We can see some variation in Fst across the chromosome. It'd be better if we cou
 
 ```r
 fst %>%
+  filter(!is.na(N1)) %>%
   filter(chr == "HanXRQChr01") %>%
   mutate(window = floor(pos/window_size)*window_size) %>%
   group_by(chr,window) %>%
@@ -89,6 +91,7 @@ We've been making these plots for single chromosomes, but we have multiple chrom
 
 ```r
 fst %>%
+  filter(!is.na(N1)) %>%
   mutate(window = floor(pos/window_size)*window_size) %>%
   group_by(chr,window) %>%
   summarize(window_fst = sum(FstNum)/sum(FstDenom),
