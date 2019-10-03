@@ -126,7 +126,7 @@ This shows that the lowest CV error is with K=2, although K=3 is our second choi
 ```bash
 #First lets remake the samplelist.txt file to make sure it is still correct. It should be the list of all samples which we can pull out of the vcf file.
 #This command pulls out the list of samples using some commandline tools from the commandline. 
-zcat vcf/full_genome.filtered.vcf.gz | head -n 100000 | grep CHR | cut -f 9- | tr '\t' '\n' > samplelist.txt
+zcat vcf/full_genome.filtered.vcf.gz | head -n 100000 | grep CHR | cut -f 10- | tr '\t' '\n' > samplelist.txt
 
 paste samplelist.txt analysis/full_genome.filtered.numericChr.2.Q
 ANN1133	0.000010 0.999990
