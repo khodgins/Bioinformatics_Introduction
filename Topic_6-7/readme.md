@@ -124,6 +124,10 @@ CV error (K=5): 1.61393
 This shows that the lowest CV error is with K=2, although K=3 is our second choice. To see how this lines up lets look at the .Q file, which shows group assignment for each sample. The Q file doesn't include sample names so we can put those together using "paste"
 
 ```bash
+#First lets remake the samplelist.txt file to make sure it is still correct. It should be the list of all samples which we can pull out of the vcf file.
+#This command pulls out the list of samples using some commandline tools from the commandline. 
+zcat vcf/full_genome.filtered.vcf.gz | head -n 100000 | grep CHR | cut -f 9- | tr '\t' '\n' > samplelist.txt
+
 paste samplelist.txt analysis/full_genome.filtered.numericChr.2.Q
 ANN1133	0.000010 0.999990
 ANN1134	0.000010 0.999990
@@ -146,6 +150,7 @@ scp -rp trainee35@sbs-35.erc.monash.edu:~/vcf2fst.pl ~/
 We need two files, a sample info file and a group file. The sample info file tells the program which population each sample is in and the group file tells the program which populations to compare. We can make them here:
 
 ```
+
 for i in `cat samplelist.txt`; 
 	do echo -e "$i\t${i/%????/}"; 
 done > sampleinfo.txt
@@ -158,6 +163,7 @@ perl ~/vcf2fst.pl sampleinfo.txt popinfo.txt \
 ```
 We're going to move from the command line to desktop Rstudio, but as a last step lets copy our samplelist file to the analysis directory so we can use it later.
 ```bash
+
 cp samplelist.txt analysis/
 ```
 
